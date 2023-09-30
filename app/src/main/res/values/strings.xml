@@ -22,6 +22,8 @@
     <string name="email">hrahmat950@gmail.com</string>
     <string name="no_phone">1234567890</string>
     <string name="url_profil">https://avatars.githubusercontent.com/u/87407102?v=4</string>
+    <string name="add_to_cart">Tambahkan Ke keranjang - %1$s</string>
+
 
     <string name="name_food">Name Food</string>
     <string name="textlokasi">Lokasi</string>
