@@ -41,5 +41,9 @@
     <string name="title_email">Email</string>
     <string name="title_phone_number">Phone Number</string>
     <string name="title_name">Name</string>
+    <string name="title_catatan">Catatan :</string>
+    <string name="title_keranjang">Keranjang</string>
+    <string name="title_total_harga">Total Harga</string>
+    <string name="title_pesan">Pesan</string>
 
 </resources>
