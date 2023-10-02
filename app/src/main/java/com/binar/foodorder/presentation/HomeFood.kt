@@ -1,6 +1,7 @@
 package com.binar.foodorder.presentation
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,11 +12,16 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.binar.foodorder.R
+import com.binar.foodorder.adapter.CategoryAdapter
 import com.binar.foodorder.adapter.FoodAdapter
 import com.binar.foodorder.databinding.FragmentHomeFoodBinding
+import com.binar.foodorder.model.CategoryDataSource
+import com.binar.foodorder.model.CategoryDataSourceImpl
 import com.binar.foodorder.model.Food
-import com.binar.foodorder.model.FoodLocalDataSource
+import com.binar.foodorder.model.FoodDataSource
+import com.binar.foodorder.model.FoodDataSourceImpl
 import com.binar.foodorder.repository.FoodRepository
+import com.binar.foodorder.repository.FoodRepositoryImpl
 import com.binar.foodorder.repository.ViewDataStoreManager
 import com.binar.foodorder.util.GenericViewModelFactory
 import com.binar.foodorder.viewmodel.DatastoreViewModel
@@ -26,15 +32,16 @@ class HomeFood : Fragment() {
 
     private lateinit var binding: FragmentHomeFoodBinding
     private val foodsViewModel: FoodViewModel by viewModels {
-        val foodDataSource: FoodLocalDataSource = FoodLocalDataSource()
-        val foodRepository: FoodRepository = FoodRepository(foodDataSource)
+        val foodDataSource: FoodDataSource = FoodDataSourceImpl()
+        val categoryDataSource: CategoryDataSource = CategoryDataSourceImpl()
+        val foodRepository: FoodRepository = FoodRepositoryImpl(foodDataSource, categoryDataSource)
         GenericViewModelFactory.create(FoodViewModel(foodRepository))
     }
     private val viewDataStoreViewModel: DatastoreViewModel by viewModels {
         val vds: ViewDataStoreManager = ViewDataStoreManager(requireContext())
         GenericViewModelFactory.create(DatastoreViewModel(vds))
     }
-    private val mainViewModel : MainViewModel by activityViewModels()
+    private val mainViewModel: MainViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,6 +54,8 @@ class HomeFood : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpRecycleview()
+        setUpRecycleviewCategory()
+        Log.d(requireContext().toString(), "Category:${setUpRecycleviewCategory()} ")
         setViewList()
 //        setViewListActivity()
     }
@@ -68,6 +77,21 @@ class HomeFood : Fragment() {
         }
     }
 
+    private fun setUpRecycleviewCategory() {
+        val recyclerView = binding.recyclerviewCategory
+        recyclerView.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        val adapter = CategoryAdapter(
+            onItemClick = { category ->
+            },
+
+            )
+        recyclerView.adapter = adapter
+        foodsViewModel.category.observe(viewLifecycleOwner) { category ->
+            adapter.submitListCategory(category)
+        }
+    }
+
     private fun navigateToDetailFood(food: Food? = null) {
         val action = HomeFoodDirections.actionHomeFoodToDetailFood(food)
         findNavController().navigate(action)
@@ -78,22 +102,23 @@ class HomeFood : Fragment() {
         DetailFoodActivity.startActivity(requireContext(), item)
     }
 
-    private fun setViewListActivity(){
+    private fun setViewListActivity() {
 
-            mainViewModel.isLinearView.observe(this) { isLinearView ->
-                binding.iconList.setOnClickListener {
-                    viewDataStoreViewModel.setIsLinearView(!isLinearView)
-                }
+        mainViewModel.isLinearView.observe(this) { isLinearView ->
+            binding.iconList.setOnClickListener {
+                viewDataStoreViewModel.setIsLinearView(!isLinearView)
             }
+        }
 
     }
 
-    private fun setViewList(){
+    private fun setViewList() {
         viewDataStoreViewModel.getIsLinearView().observe(viewLifecycleOwner) { isLinearView ->
             toggleRecyclerViewLayout(isLinearView)
             setUpListToggle(isLinearView)
         }
     }
+
     private fun setUpListToggle(isLinearView: Boolean) {
         val iconList = binding.iconList
         iconList.setImageResource(if (isLinearView) R.drawable.baseline_list_24 else R.drawable.icon_grid)
