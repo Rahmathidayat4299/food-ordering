@@ -73,87 +73,6 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:listitem="@layout/item_category" />
 
-        <!--        <ImageView-->
-        <!--            android:id="@+id/iv_nasi"-->
-        <!--            style="@style/image_style"-->
-        <!--            android:contentDescription="@string/nasi"-->
-        <!--            android:src="@drawable/nasi"-->
-        <!--            app:layout_constraintEnd_toStartOf="@+id/iv_mie"-->
-        <!--            app:layout_constraintHorizontal_bias="0.5"-->
-        <!--            app:layout_constraintStart_toStartOf="parent"-->
-        <!--            app:layout_constraintTop_toTopOf="parent" />-->
-
-        <!--        <TextView-->
-        <!--            android:id="@+id/tv_nasi"-->
-        <!--            style="@style/TextAppearance.Material3.BodyMedium"-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:text="@string/nasi"-->
-        <!--            app:layout_constraintEnd_toEndOf="@id/iv_nasi"-->
-        <!--            app:layout_constraintStart_toStartOf="@id/iv_nasi"-->
-        <!--            app:layout_constraintTop_toBottomOf="@id/iv_nasi" />-->
-
-        <!--        <ImageView-->
-        <!--            android:id="@+id/iv_mie"-->
-        <!--            style="@style/image_style"-->
-        <!--            android:contentDescription="@string/mie"-->
-        <!--            android:src="@drawable/mie"-->
-        <!--            app:layout_constraintEnd_toStartOf="@+id/iv_snack"-->
-        <!--            app:layout_constraintHorizontal_bias="0.5"-->
-        <!--            app:layout_constraintStart_toEndOf="@+id/iv_nasi"-->
-        <!--            app:layout_constraintTop_toTopOf="parent" />-->
-
-        <!--        <TextView-->
-        <!--            android:id="@+id/tv_mie"-->
-        <!--            style="@style/TextAppearance.Material3.BodyMedium"-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:text="@string/mie"-->
-        <!--            app:layout_constraintEnd_toEndOf="@id/iv_mie"-->
-        <!--            app:layout_constraintStart_toStartOf="@id/iv_mie"-->
-        <!--            app:layout_constraintTop_toBottomOf="@id/iv_mie" />-->
-
-        <!--        <ImageView-->
-        <!--            android:id="@+id/iv_snack"-->
-        <!--            style="@style/image_style"-->
-        <!--            android:contentDescription="@string/snack"-->
-        <!--            android:src="@drawable/snack"-->
-        <!--            app:layout_constraintEnd_toStartOf="@+id/iv_minuman"-->
-        <!--            app:layout_constraintHorizontal_bias="0.5"-->
-        <!--            app:layout_constraintStart_toEndOf="@+id/iv_mie"-->
-        <!--            app:layout_constraintTop_toTopOf="parent"-->
-        <!--            tools:ignore="ImageContrastCheck" />-->
-
-        <!--        <TextView-->
-        <!--            android:id="@+id/tv_snack"-->
-        <!--            style="@style/TextAppearance.Material3.BodyMedium"-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:text="@string/snack"-->
-        <!--            app:layout_constraintEnd_toEndOf="@id/iv_snack"-->
-        <!--            app:layout_constraintStart_toStartOf="@id/iv_snack"-->
-        <!--            app:layout_constraintTop_toBottomOf="@id/iv_snack" />-->
-
-        <!--        <ImageView-->
-        <!--            android:id="@+id/iv_minuman"-->
-        <!--            style="@style/image_style"-->
-        <!--            android:contentDescription="@string/minuman"-->
-        <!--            android:src="@drawable/minuman"-->
-        <!--            app:layout_constraintEnd_toEndOf="parent"-->
-        <!--            app:layout_constraintHorizontal_bias="0.5"-->
-        <!--            app:layout_constraintStart_toEndOf="@+id/iv_snack"-->
-        <!--            app:layout_constraintTop_toTopOf="parent" />-->
-
-        <!--        <TextView-->
-        <!--            android:id="@+id/tv_minuman"-->
-        <!--            style="@style/TextAppearance.Material3.BodyMedium"-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:text="@string/minuman"-->
-        <!--            app:layout_constraintEnd_toEndOf="@id/iv_minuman"-->
-        <!--            app:layout_constraintStart_toStartOf="@id/iv_minuman"-->
-        <!--            app:layout_constraintTop_toBottomOf="@id/iv_minuman" />-->
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.core.widget.NestedScrollView
@@ -168,7 +87,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <!-- ... Bagian lain dari list_menu_makanan ... -->
             <TextView
                 android:id="@+id/tv_list_menu_makanan"
                 style="@style/TextAppearance.Material3.ActionBar.Title"
@@ -199,45 +117,4 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
-    <!--    <androidx.constraintlayout.widget.ConstraintLayout-->
-    <!--        android:id="@+id/list_menu_makanan"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="0dp"-->
-    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--        app:layout_constraintTop_toBottomOf="@id/category"-->
-
-    <!--        >-->
-
-    <!--        <TextView-->
-    <!--            android:id="@+id/tv_list_menu_makanan"-->
-    <!--            style="@style/TextAppearance.Material3.ActionBar.Title"-->
-    <!--            android:layout_width="wrap_content"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:layout_marginTop="10dp"-->
-    <!--            android:text="@string/list_menu_makanan"-->
-    <!--            android:textStyle="bold"-->
-    <!--            app:layout_constraintStart_toStartOf="parent"-->
-    <!--            app:layout_constraintTop_toTopOf="parent" />-->
-
-    <!--        <ImageView-->
-    <!--            android:id="@+id/icon_list"-->
-    <!--            style="@style/ShapeAppearance.Material3.MediumComponent"-->
-    <!--            android:layout_width="40dp"-->
-    <!--            android:layout_height="40dp"-->
-    <!--            android:contentDescription="@string/listicon"-->
-    <!--            android:src="@drawable/baseline_list_24"-->
-    <!--            app:layout_constraintEnd_toEndOf="parent"-->
-    <!--            app:layout_constraintTop_toTopOf="parent" />-->
-
-    <!--        <androidx.recyclerview.widget.RecyclerView-->
-    <!--            android:id="@+id/recycleviewFood"-->
-    <!--            android:layout_width="match_parent"-->
-    <!--            android:layout_height="0dp"-->
-    <!--            app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--            app:layout_constraintTop_toBottomOf="@id/tv_list_menu_makanan"-->
-    <!--            tools:listitem="@layout/item_food_listview"-->
-    <!--           />-->
-
-    <!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
-
 </androidx.constraintlayout.widget.ConstraintLayout>
