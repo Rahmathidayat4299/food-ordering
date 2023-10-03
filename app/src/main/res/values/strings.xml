@@ -45,5 +45,14 @@
     <string name="title_keranjang">Keranjang</string>
     <string name="title_total_harga">Total Harga</string>
     <string name="title_pesan">Pesan</string>
+    <string name="title_konfirmasi_pesanan">Konfirmasi Pesanan</string>
+    <string name="title_dikirim">Dikirim</string>
+    <string name="title_ambil_sendiri">Ambil Sendiri</string>
+    <string name="title_metode_pengiriman">Metode Pengiriman</string>
+    <string name="title_tunai">Tunai</string>
+    <string name="title_dompet_digital">Dompet Digital</string>
+    <string name="title_ringkasan_pembayaran">Ringkasan Pembayaran</string>
+    <string name="total_pembayaran">Total Pembayaran</string>
+    <string name="title_checkout_pesan">Pesan</string>
 
 </resources>
