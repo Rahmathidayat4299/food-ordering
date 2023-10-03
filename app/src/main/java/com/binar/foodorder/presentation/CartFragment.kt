@@ -4,6 +4,7 @@ package com.binar.foodorder.presentation
 
 
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -55,6 +56,7 @@ class CartFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpRecycleview()
+        navigateToOrdeConfirmation()
     }
     private fun setUpRecycleview() {
         val recyclerView = binding.recyclerviewCart
@@ -76,6 +78,12 @@ class CartFragment : Fragment() {
     //detail to activity
     private fun navigateToDetail(item: Food) {
         DetailFoodActivity.startActivity(requireContext(), item)
+    }
+    private fun navigateToOrdeConfirmation(){
+        binding.btnOrder.setOnClickListener {
+            val intent = Intent(requireContext(),ConfirmationOrderActivity::class.java)
+            startActivity(intent)
+        }
     }
 
 

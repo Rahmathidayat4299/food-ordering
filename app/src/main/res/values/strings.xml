@@ -54,5 +54,8 @@
     <string name="title_ringkasan_pembayaran">Ringkasan Pembayaran</string>
     <string name="total_pembayaran">Total Pembayaran</string>
     <string name="title_checkout_pesan">Pesan</string>
+    <string name="title_home">Home</string>
+    <string name="title_terima_kasih">Terima Kasih</string>
+    <string name="title_pesanan_berhasil">Pesanan Berhasil</string>
 
 </resources>
