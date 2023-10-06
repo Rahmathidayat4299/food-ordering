@@ -6,6 +6,7 @@ import android.widget.Button
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.binar.foodorder.R
@@ -19,6 +20,7 @@ import com.binar.foodorder.data.repository.CartRepositoryImpl
 import com.binar.foodorder.databinding.ActivityConfirmationOrderBinding
 import com.binar.foodorder.model.Cart
 import com.binar.foodorder.util.GenericViewModelFactory
+import com.binar.foodorder.util.proceedWhen
 import com.binar.foodorder.util.toCurrencyFormat
 import com.binar.foodorder.viewmodel.CartViewModel
 
@@ -61,6 +63,7 @@ class ConfirmationOrderActivity : AppCompatActivity() {
         setContentView(binding.root)
         showDialog()
         setUpRecycleview()
+        back()
     }
     private fun showDialog(){
         binding.btnCheckout.setOnClickListener {
@@ -82,15 +85,36 @@ class ConfirmationOrderActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         recyclerView.adapter = adapter
+
+//        viewModel.cartList.observe(this) { result ->
+//            result.payload?.let { (carts, totalPrice) ->
+//                adapter.submitData(carts)
+//                binding.tvPembayaran.text = totalPrice.toCurrencyFormat()
+//            }
+//        }
         viewModel.cartList.observe(this) { result ->
-            result.payload?.let { (carts, totalPrice) ->
-                adapter.submitData(carts)
-                binding.tvPembayaran.text = totalPrice.toCurrencyFormat()
-            }
+            result.proceedWhen(
+                doOnSuccess ={
+                    recyclerView.isVisible = true
+                    binding.progresbarOrderConfirmation.isVisible = false
+                    result.payload?.let { (carts, totalPrice) ->
+                        adapter.submitData(carts)
+                        binding.tvPembayaran.text = totalPrice.toCurrencyFormat()
+                    }
+                }, doOnLoading = {
+                    binding.progresbarOrderConfirmation.isVisible = true
+                    recyclerView.isVisible = false
+                }
+            )
         }
     }
     private fun navigateToHome(){
         val intent = Intent(this,MainActivity::class.java)
         startActivity(intent)
+    }
+    private fun back(){
+        binding.icBackArrow.setOnClickListener {
+            onBackPressed()
+        }
     }
 }

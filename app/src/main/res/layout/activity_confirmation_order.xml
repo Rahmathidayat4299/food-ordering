@@ -4,9 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginVertical="5dp"
+    android:layout_marginVertical="8dp"
     tools:context=".presentation.ConfirmationOrderActivity">
-
+    <ProgressBar
+        android:id="@+id/progresbar_order_confirmation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/header_confirm_order"
         android:layout_width="match_parent"
@@ -91,8 +99,9 @@
                 android:background="@drawable/toggle_widget_background"
                 android:button="@null"
                 android:gravity="center"
+
                 android:text="@string/title_dikirim"
-                android:textColor="@color/white" />
+                android:textColor="@color/black" />
         </RadioGroup>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
