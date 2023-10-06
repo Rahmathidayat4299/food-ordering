@@ -4,13 +4,12 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.binar.foodorder.R
 import com.binar.foodorder.databinding.ActivityMainBinding
-import com.binar.foodorder.repository.ViewDataStoreManager
+import com.binar.foodorder.data.local.datastore.ViewDataStoreManager
 import com.binar.foodorder.util.GenericViewModelFactory
 import com.binar.foodorder.viewmodel.MainViewModel
 

@@ -23,13 +23,11 @@ class FoodViewModel(private val foodRepository: FoodRepository) : ViewModel() {
     init {
 //        _food.value = viewModelScope.launch(Dispatchers.IO) { foodRepository.getFood() }
         _category.value = foodRepository.getCategory()
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             val foodList = foodRepository.getFood()
             _food.postValue(foodList)
         }
     }
-
-
 
 
 }

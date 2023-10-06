@@ -8,6 +8,7 @@ import kotlinx.android.parcel.Parcelize
  */
 @Parcelize
 data class Food(
+    val id: Int? = null,
     val name:String,
     val Image:String,
     val Price:Double,

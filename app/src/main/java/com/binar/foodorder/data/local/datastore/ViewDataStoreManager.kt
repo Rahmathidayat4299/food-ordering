@@ -1,4 +1,4 @@
-package com.binar.foodorder.repository
+package com.binar.foodorder.data.local.datastore
 
 import android.content.Context
 import android.util.Log

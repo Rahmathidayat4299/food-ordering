@@ -22,7 +22,7 @@ import com.binar.foodorder.model.FoodDataSource
 import com.binar.foodorder.model.FoodDataSourceImpl
 import com.binar.foodorder.repository.FoodRepository
 import com.binar.foodorder.repository.FoodRepositoryImpl
-import com.binar.foodorder.repository.ViewDataStoreManager
+import com.binar.foodorder.data.local.datastore.ViewDataStoreManager
 import com.binar.foodorder.util.GenericViewModelFactory
 import com.binar.foodorder.viewmodel.DatastoreViewModel
 import com.binar.foodorder.viewmodel.FoodViewModel

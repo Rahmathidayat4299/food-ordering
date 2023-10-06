@@ -14,21 +14,20 @@ class DetailViewModel(private val extras: Bundle?) : ViewModel() {
     val food = extras?.getParcelable<Food>(DetailFoodActivity.EXTRA_FOOD)
 
     val priceLiveData = MutableLiveData<Double>().apply {
-        postValue(food?.Price)
+        postValue(0.0)
     }
     val productCountLiveData = MutableLiveData<Int>().apply {
-        postValue(1)
+        postValue(0)
     }
 
     fun add() {
-        val count = (productCountLiveData.value ?: 1) + 1
+        val count = (productCountLiveData.value ?: 0) + 1
         productCountLiveData.postValue(count)
         priceLiveData.postValue(food?.Price?.times(count) ?: 0.0)
     }
     fun minus() {
-        val currentCount = productCountLiveData.value ?: 1
-        if (currentCount > 1) {
-            val count = currentCount - 1
+        if ((productCountLiveData.value ?: 0) > 0) {
+            val count = (productCountLiveData.value ?: 0) - 1
             productCountLiveData.postValue(count)
             priceLiveData.postValue(food?.Price?.times(count) ?: 0.0)
         }
