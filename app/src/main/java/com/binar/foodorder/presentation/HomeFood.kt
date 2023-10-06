@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -24,6 +25,8 @@ import com.binar.foodorder.data.repository.FoodRepositoryImpl
 import com.binar.foodorder.databinding.FragmentHomeFoodBinding
 import com.binar.foodorder.model.Food
 import com.binar.foodorder.util.GenericViewModelFactory
+import com.binar.foodorder.util.proceedWhen
+import com.binar.foodorder.util.toCurrencyFormat
 import com.binar.foodorder.viewmodel.DatastoreViewModel
 import com.binar.foodorder.viewmodel.FoodViewModel
 import com.binar.foodorder.viewmodel.MainViewModel
@@ -74,8 +77,24 @@ class HomeFood : Fragment() {
         )
         recyclerView.adapter = adapter
 
-        foodsViewModel.foods.observe(viewLifecycleOwner) { foods ->
-            adapter.setData(foods)
+//        foodsViewModel.foods.observe(viewLifecycleOwner) { foods ->
+//            adapter.setData(foods)
+//        }
+        foodsViewModel.foods.observe(viewLifecycleOwner) { result ->
+            result.proceedWhen(
+                doOnSuccess = {
+                    binding.progresbarHome.isVisible = false
+                    binding.recycleviewFood.isVisible = true
+                    result.payload?.let { foods ->
+                        adapter.setData(foods)
+                    }
+
+                }, doOnLoading = {
+                    binding.recycleviewFood.isVisible = false
+                    binding.progresbarHome.isVisible = true
+
+                }
+            )
         }
     }
 

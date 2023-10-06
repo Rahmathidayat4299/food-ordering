@@ -58,5 +58,6 @@
     <string name="title_terima_kasih">Terima Kasih</string>
     <string name="title_pesanan_berhasil">Pesanan Berhasil</string>
     <string name="total_quantity">x%s</string>
+    <string name="title_keranjang_anda_kosong">Keranjang Anda Kosong</string>
 
 </resources>

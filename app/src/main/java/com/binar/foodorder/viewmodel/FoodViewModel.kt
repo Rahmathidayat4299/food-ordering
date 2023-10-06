@@ -17,10 +17,11 @@ import kotlinx.coroutines.flow.map
  * Created by Rahmat Hidayat on 27/08/2023.
  */
 class FoodViewModel(private val foodRepository: FoodRepository) : ViewModel() {
-    val foods: LiveData<List<Food>>
-        get() = foodRepository.getFoods().map {
-            it.payload ?: emptyList()
-        }.asLiveData(Dispatchers.IO)
+//    val foods: LiveData<List<Food>>
+//        get() = foodRepository.getFoods().map {
+//            it.payload ?: emptyList()
+//        }.asLiveData(Dispatchers.IO)
+val foods: LiveData<ResultWrapper<List<Food>>> = foodRepository.getFoods().asLiveData(Dispatchers.IO)
     val category: LiveData<List<Category>> = liveData(Dispatchers.IO) {
         val categories = foodRepository.getCategories()
         emit(categories)

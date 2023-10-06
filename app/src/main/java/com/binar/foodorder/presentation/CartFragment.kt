@@ -6,9 +6,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.binar.foodorder.R
 import com.binar.foodorder.adapter.CartListAdapter
 import com.binar.foodorder.adapter.CartListener
 import com.binar.foodorder.adapter.FoodAdapter
@@ -96,10 +98,29 @@ class CartFragment : Fragment() {
 //        )
         recyclerView.adapter = adapter
         viewModel.cartList.observe(viewLifecycleOwner) { result ->
-            result.payload?.let { (carts, totalPrice) ->
-                adapter.submitData(carts)
-                binding.tvTotalValue.text = totalPrice.toCurrencyFormat()
+            result.proceedWhen(doOnSuccess = {
+                binding.progresbarCart.isVisible = false
+                binding.tvListCartEmpty.isVisible = false
+                binding.recyclerviewCart.isVisible = true
+                result.payload?.let { (carts, totalPrice) ->
+                    adapter.submitData(carts)
+                    binding.tvTotalValue.text = totalPrice.toCurrencyFormat()
+                }
+
+            }, doOnLoading = {
+                binding.tvListCartEmpty.isVisible = false
+                binding.progresbarCart.isVisible = true
+                binding.recyclerviewCart.isVisible = false
+
+            }, doOnError = {
+
+            }, doOnEmpty = {
+                binding.progresbarCart.isVisible = false
+                binding.recyclerviewCart.isVisible = false
+                binding.tvListCartEmpty.isVisible = true
+                binding.tvListCartEmpty.text = R.string.title_keranjang_anda_kosong.toString()
             }
+            )
         }
 //        foodsViewModel.foods.observe(viewLifecycleOwner) { foods ->
 //            adapter.setData(foods)
