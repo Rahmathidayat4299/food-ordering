@@ -14,15 +14,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.binar.foodorder.R
 import com.binar.foodorder.adapter.CategoryAdapter
 import com.binar.foodorder.adapter.FoodAdapter
-import com.binar.foodorder.databinding.FragmentHomeFoodBinding
-import com.binar.foodorder.model.CategoryDataSource
-import com.binar.foodorder.model.CategoryDataSourceImpl
-import com.binar.foodorder.model.Food
-import com.binar.foodorder.model.FoodDataSource
-import com.binar.foodorder.model.FoodDataSourceImpl
-import com.binar.foodorder.repository.FoodRepository
-import com.binar.foodorder.repository.FoodRepositoryImpl
+import com.binar.foodorder.data.dummy.DummyCategoryDataSource
+import com.binar.foodorder.data.dummy.DummyCategoryDataSourceImpl
+import com.binar.foodorder.data.local.database.AppDatabase
+import com.binar.foodorder.data.local.database.datasource.FoodDatabaseDataSource
 import com.binar.foodorder.data.local.datastore.ViewDataStoreManager
+import com.binar.foodorder.data.repository.FoodRepository
+import com.binar.foodorder.data.repository.FoodRepositoryImpl
+import com.binar.foodorder.databinding.FragmentHomeFoodBinding
+import com.binar.foodorder.model.Food
 import com.binar.foodorder.util.GenericViewModelFactory
 import com.binar.foodorder.viewmodel.DatastoreViewModel
 import com.binar.foodorder.viewmodel.FoodViewModel
@@ -32,8 +32,10 @@ class HomeFood : Fragment() {
 
     private lateinit var binding: FragmentHomeFoodBinding
     private val foodsViewModel: FoodViewModel by viewModels {
-        val foodDataSource: FoodDataSource = FoodDataSourceImpl()
-        val categoryDataSource: CategoryDataSource = CategoryDataSourceImpl()
+     val databaseDataSource = AppDatabase.getInstance(requireContext())
+        val categoryDataSource: DummyCategoryDataSource = DummyCategoryDataSourceImpl()
+        val foodDao = databaseDataSource.foodDao()
+        val foodDataSource = FoodDatabaseDataSource(foodDao)
         val foodRepository: FoodRepository = FoodRepositoryImpl(foodDataSource, categoryDataSource)
         GenericViewModelFactory.create(FoodViewModel(foodRepository))
     }

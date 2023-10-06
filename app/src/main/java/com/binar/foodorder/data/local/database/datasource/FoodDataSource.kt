@@ -1,10 +1,5 @@
 package com.binar.foodorder.data.local.database.datasource
 
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
-import androidx.room.Update
 import com.binar.foodorder.data.local.database.dao.FoodDao
 import com.binar.foodorder.data.local.database.entity.FoodEntity
 import kotlinx.coroutines.flow.Flow
@@ -27,7 +22,7 @@ class FoodDatabaseDataSource(private val dao: FoodDao) : FoodDataSource {
     }
 
     override suspend fun insertProduct(food: List<FoodEntity>) {
-        return dao.insertProduct(food)
+        return dao.insertFood(food)
     }
 
     override suspend fun deleteProduct(food: FoodEntity): Int {
