@@ -35,7 +35,7 @@ class HomeFood : Fragment() {
 
     private lateinit var binding: FragmentHomeFoodBinding
     private val foodsViewModel: FoodViewModel by viewModels {
-     val databaseDataSource = AppDatabase.getInstance(requireContext())
+        val databaseDataSource = AppDatabase.getInstance(requireContext())
         val categoryDataSource: DummyCategoryDataSource = DummyCategoryDataSourceImpl()
         val foodDao = databaseDataSource.foodDao()
         val foodDataSource = FoodDatabaseDataSource(foodDao)
