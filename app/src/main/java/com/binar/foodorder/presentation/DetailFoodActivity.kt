@@ -4,13 +4,20 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import coil.load
 import com.binar.foodorder.R
+import com.binar.foodorder.data.local.database.AppDatabase
+import com.binar.foodorder.data.local.database.datasource.CartDataSource
+import com.binar.foodorder.data.local.database.datasource.CartDatabaseDataSource
+import com.binar.foodorder.data.repository.CartRepository
+import com.binar.foodorder.data.repository.CartRepositoryImpl
 import com.binar.foodorder.databinding.ActivityDetailFoodBinding
 import com.binar.foodorder.model.Food
 import com.binar.foodorder.util.GenericViewModelFactory
+import com.binar.foodorder.util.proceedWhen
 import com.binar.foodorder.util.toCurrencyFormat
 import com.binar.foodorder.viewmodel.DetailViewModel
 
@@ -19,7 +26,11 @@ class DetailFoodActivity : AppCompatActivity() {
         ActivityDetailFoodBinding.inflate(layoutInflater)
     }
     private val viewModel: DetailViewModel by viewModels {
-        GenericViewModelFactory.create(DetailViewModel(intent.extras))
+        val database = AppDatabase.getInstance(this)
+        val cartDao = database.cartDao()
+        val cartDataSource: CartDataSource = CartDatabaseDataSource(cartDao)
+        val repo: CartRepository = CartRepositoryImpl(cartDataSource)
+        GenericViewModelFactory.create(DetailViewModel(intent.extras, repo))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,6 +61,9 @@ class DetailFoodActivity : AppCompatActivity() {
         binding.tvDecrement.setOnClickListener {
             viewModel.minus()
         }
+        binding.btnCart.setOnClickListener {
+            viewModel.addToCart()
+        }
 
         binding.mapView.setOnClickListener {
             val gmmIntentUri = Uri.parse("https://maps.app.goo.gl/h4wQKqaBuXzftGK77")
@@ -62,11 +76,20 @@ class DetailFoodActivity : AppCompatActivity() {
         viewModel.priceLiveData.observe(this) {
             binding.textPriceDetail.text = it.toCurrencyFormat()
             val formatPrice = it.toCurrencyFormat()
-            val addToCartText = getString(R.string.add_to_cart,formatPrice)
+            val addToCartText = getString(R.string.add_to_cart, formatPrice)
             binding.btnCart.text = addToCartText
         }
         viewModel.productCountLiveData.observe(this) {
             binding.tvQuantity.text = it.toString()
+        }
+        viewModel.addToCartResult.observe(this) {
+            it.proceedWhen(
+                doOnSuccess = {
+                    Toast.makeText(this, "Add to cart success !", Toast.LENGTH_SHORT).show()
+                    finish()
+                }, doOnError = {
+                    Toast.makeText(this, it.exception?.message.orEmpty(), Toast.LENGTH_SHORT).show()
+                })
         }
 
     }
