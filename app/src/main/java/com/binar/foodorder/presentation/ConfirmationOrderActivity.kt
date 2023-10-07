@@ -86,12 +86,6 @@ class ConfirmationOrderActivity : AppCompatActivity() {
 
         recyclerView.adapter = adapter
 
-//        viewModel.cartList.observe(this) { result ->
-//            result.payload?.let { (carts, totalPrice) ->
-//                adapter.submitData(carts)
-//                binding.tvPembayaran.text = totalPrice.toCurrencyFormat()
-//            }
-//        }
         viewModel.cartList.observe(this) { result ->
             result.proceedWhen(
                 doOnSuccess ={

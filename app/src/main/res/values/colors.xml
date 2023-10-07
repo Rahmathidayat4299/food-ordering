@@ -13,4 +13,5 @@
     <color name="my_dark_primary">#C4C4C4</color>
     <color name="my_dark_accent">#00000000</color>
     <color name="transparent">#FFFFFF</color>
+    <color name="grey_border">#CCC3C3C3</color>
 </resources>

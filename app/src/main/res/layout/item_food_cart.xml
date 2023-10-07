@@ -130,8 +130,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-
-            android:hint="text_hint_notes"
+            android:background="@drawable/bg_button_rounded_border_transparent"
+            android:hint="Add note order"
             android:imeOptions="actionDone"
             android:inputType="text"
             android:maxLines="3"

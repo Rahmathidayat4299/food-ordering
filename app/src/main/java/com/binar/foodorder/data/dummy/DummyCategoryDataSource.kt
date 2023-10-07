@@ -1,7 +1,6 @@
 package com.binar.foodorder.data.dummy
 
 import com.binar.foodorder.model.Category
-import com.binar.foodorder.model.CategoryDataSource
 
 interface DummyCategoryDataSource {
     fun getFoodCategory(): List<Category>

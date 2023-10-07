@@ -26,7 +26,6 @@ import com.binar.foodorder.databinding.FragmentHomeFoodBinding
 import com.binar.foodorder.model.Food
 import com.binar.foodorder.util.GenericViewModelFactory
 import com.binar.foodorder.util.proceedWhen
-import com.binar.foodorder.util.toCurrencyFormat
 import com.binar.foodorder.viewmodel.DatastoreViewModel
 import com.binar.foodorder.viewmodel.FoodViewModel
 import com.binar.foodorder.viewmodel.MainViewModel
@@ -62,7 +61,6 @@ class HomeFood : Fragment() {
         setUpRecycleviewCategory()
         Log.d(requireContext().toString(), "Category:${setUpRecycleviewCategory()} ")
         setViewList()
-//        setViewListActivity()
     }
 
     private fun setUpRecycleview() {
@@ -77,9 +75,6 @@ class HomeFood : Fragment() {
         )
         recyclerView.adapter = adapter
 
-//        foodsViewModel.foods.observe(viewLifecycleOwner) { foods ->
-//            adapter.setData(foods)
-//        }
         foodsViewModel.foods.observe(viewLifecycleOwner) { result ->
             result.proceedWhen(
                 doOnSuccess = {

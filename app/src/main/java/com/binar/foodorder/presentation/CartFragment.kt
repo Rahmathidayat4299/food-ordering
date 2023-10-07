@@ -13,11 +13,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.binar.foodorder.R
 import com.binar.foodorder.adapter.CartListAdapter
 import com.binar.foodorder.adapter.CartListener
-import com.binar.foodorder.adapter.FoodAdapter
 import com.binar.foodorder.data.local.database.AppDatabase
 import com.binar.foodorder.data.local.database.datasource.CartDataSource
 import com.binar.foodorder.data.local.database.datasource.CartDatabaseDataSource
-import com.binar.foodorder.data.local.datastore.ViewDataStoreManager
 import com.binar.foodorder.data.repository.CartRepository
 import com.binar.foodorder.data.repository.CartRepositoryImpl
 import com.binar.foodorder.databinding.FragmentCartBinding
@@ -27,22 +25,11 @@ import com.binar.foodorder.util.GenericViewModelFactory
 import com.binar.foodorder.util.proceedWhen
 import com.binar.foodorder.util.toCurrencyFormat
 import com.binar.foodorder.viewmodel.CartViewModel
-import com.binar.foodorder.viewmodel.DatastoreViewModel
 
 
 class CartFragment : Fragment() {
     private lateinit var binding: FragmentCartBinding
 
-    //    private val foodsViewModel: FoodViewModel by viewModels {
-////        val foodDataSource: FoodDataSource = FoodDataSourceImpl()
-////        val categoryDataSource: CategoryDataSource = CategoryDataSourceImpl()
-////        val foodRepository: FoodRepository = FoodRepositoryImpl(foodDataSource,categoryDataSource)
-////        GenericViewModelFactory.create(FoodViewModel(foodRepository))
-//    }
-    private val viewDataStoreViewModel: DatastoreViewModel by viewModels {
-        val vds: ViewDataStoreManager = ViewDataStoreManager(requireContext())
-        GenericViewModelFactory.create(DatastoreViewModel(vds))
-    }
     private val viewModel: CartViewModel by viewModels {
         val database = AppDatabase.getInstance(requireContext())
         val cartDao = database.cartDao()
@@ -89,13 +76,6 @@ class CartFragment : Fragment() {
     private fun setUpRecycleview() {
         val recyclerView = binding.recyclerviewCart
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-//        val adapter = FoodAdapter(
-//            onItemClick = { food ->
-//                navigateToDetail(food)
-//            },
-//
-//            viewModel = viewDataStoreViewModel
-//        )
         recyclerView.adapter = adapter
         viewModel.cartList.observe(viewLifecycleOwner) { result ->
             result.proceedWhen(doOnSuccess = {
@@ -122,9 +102,6 @@ class CartFragment : Fragment() {
             }
             )
         }
-//        foodsViewModel.foods.observe(viewLifecycleOwner) { foods ->
-//            adapter.setData(foods)
-//        }
     }
 
     //detail to activity
