@@ -19,7 +19,7 @@
         tools:layout_editor_absoluteX="0dp" />
 
     <ImageView
-        android:id="@+id/btn_create"
+        android:id="@+id/btn_change_profile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="24dp"
@@ -97,25 +97,23 @@
             android:maxLines="1" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayoutPhone"
-        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-        android:layout_width="0dp"
+    <TextView
+        android:id="@+id/tv_change_pwd"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="10dp"
-        android:hint="@string/title_phone_number"
-        app:boxBackgroundColor="@color/white"
-        app:boxStrokeColor="@color/edit_text_stroke"
-        app:layout_constraintEnd_toEndOf="@id/endGuidline"
-        app:layout_constraintStart_toStartOf="@id/startGuidline"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayoutEmail">
+        android:padding="8dp"
+        android:text="Change Password"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textInputLayoutEmail" />
+    <Button
+        android:id="@+id/btn_logout"
+        app:layout_constraintTop_toBottomOf="@id/tv_change_pwd"
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/editTextPhone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="phone"
-            android:maxLines="1" />
-    </com.google.android.material.textfield.TextInputLayout>
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/title_logout"
+        android:backgroundTint="@color/blue"
 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
