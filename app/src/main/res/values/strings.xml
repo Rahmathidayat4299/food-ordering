@@ -60,4 +60,16 @@
     <string name="total_quantity">x%s</string>
     <string name="title_keranjang_anda_kosong">Keranjang Anda Kosong</string>
 
+    <string name="title_register">Register</string>
+    <string name="title_type_your_name">Type your Name</string>
+    <string name="title_insert_your_email">Insert Your Email</string>
+    <string name="title_your_password">Your Password</string>
+    <string name="title_splash_activity">Splash Activity</string>
+    <string name="title_logout">Logout</string>
+    <string name="text_not_registered_yet_register_here">Not registered yet ? Register Here</string>
+    <string name="text_already_have_an_account_click_here">Already have an Account ? Login Here</string>
+    <string name="text_highlight_login_here">Login Here</string>
+    <string name="text_highlight_register">Register Here</string>
+    <string name="text_error_name_cannot_empty">Name cannot empty</string>
+
 </resources>
