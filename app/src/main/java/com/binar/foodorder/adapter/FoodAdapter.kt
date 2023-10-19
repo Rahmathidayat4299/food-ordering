@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.binar.foodorder.viewmodel.DatastoreViewModel
 import com.binar.foodorder.databinding.ItemFoodGridviewBinding
 import com.binar.foodorder.databinding.ItemFoodListviewBinding
+import com.binar.foodorder.model.Category
 import com.binar.foodorder.model.Food
 //nilai viewModel: MainViewModel
 class FoodAdapter(private val onItemClick: (Food) -> Unit, private val viewModel: DatastoreViewModel) :
@@ -18,9 +19,9 @@ class FoodAdapter(private val onItemClick: (Food) -> Unit, private val viewModel
 
     private val differ = AsyncListDiffer(this, object : DiffUtil.ItemCallback<Food>() {
         override fun areItemsTheSame(oldItem: Food, newItem: Food): Boolean {
-            return oldItem.name == newItem.name &&
-                    oldItem.Image == newItem.Image &&
-                    oldItem.Price == newItem.Price
+            return oldItem.nama == newItem.nama &&
+                    oldItem.hargaFormat == newItem.hargaFormat &&
+                    oldItem.detail == newItem.detail
         }
 
         override fun areContentsTheSame(oldItem: Food, newItem: Food): Boolean {

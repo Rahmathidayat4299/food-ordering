@@ -6,19 +6,19 @@ import com.binar.foodorder.data.local.database.relation.CartFoodRelation
 import kotlinx.coroutines.flow.Flow
 
 interface CartDataSource {
-    fun getAllCarts(): Flow<List<CartFoodRelation>>
-    fun getCartById(cartId: Int): Flow<CartFoodRelation>
+    fun getAllCarts(): Flow<List<CartEntity>>
+    fun getCartById(cartId: Int): Flow<CartEntity>
     suspend fun insertCart(cart: CartEntity): Long
     suspend fun deleteCart(cart: CartEntity): Int
     suspend fun updateCart(cart: CartEntity): Int
 }
 
 class CartDatabaseDataSource(private val cartDao: CartDao) : CartDataSource {
-    override fun getAllCarts(): Flow<List<CartFoodRelation>> {
+    override fun getAllCarts(): Flow<List<CartEntity>> {
         return cartDao.getAllCarts()
     }
 
-    override fun getCartById(cartId: Int): Flow<CartFoodRelation> {
+    override fun getCartById(cartId: Int): Flow<CartEntity> {
         return cartDao.getCartById(cartId)
     }
 

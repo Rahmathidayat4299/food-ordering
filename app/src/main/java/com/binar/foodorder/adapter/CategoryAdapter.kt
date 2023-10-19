@@ -18,9 +18,8 @@ class CategoryAdapter(private val onItemClick: (Category) -> Unit) :
     private var items: MutableList<Category> = mutableListOf()
     private val differ = AsyncListDiffer(this, object : DiffUtil.ItemCallback<Category>() {
         override fun areItemsTheSame(oldItem: Category, newItem: Category): Boolean {
-            return oldItem.id == newItem.id &&
-                    oldItem.name == newItem.name &&
-                    oldItem.categoryImgUrl == newItem.categoryImgUrl
+            return oldItem.nama == newItem.nama &&
+                    oldItem.imageUrl == newItem.imageUrl
         }
 
         override fun areContentsTheSame(oldItem: Category, newItem: Category): Boolean {
@@ -49,11 +48,16 @@ class CategoryAdapter(private val onItemClick: (Category) -> Unit) :
 
     class CategoryViewHolder(
         val binding: ItemCategoryBinding,
-        onItemClick: (Category) -> Unit
+        private val onItemClick: (Category) -> Unit,
     ) : RecyclerView.ViewHolder(binding.root) {
+
+
         fun bindView(item: Category) {
-            binding.tvFoodimage.load(item.categoryImgUrl)
-            binding.tvFoodname.text = item.name
+            binding.tvFoodimage.load(item.imageUrl)
+            binding.tvFoodname.text = item.nama
+            binding.root.setOnClickListener {
+                onItemClick(item)
+            }
         }
     }
 }

@@ -19,6 +19,7 @@ import com.binar.foodorder.model.Food
 import com.binar.foodorder.util.GenericViewModelFactory
 import com.binar.foodorder.util.proceedWhen
 import com.binar.foodorder.util.toCurrencyFormat
+import com.binar.foodorder.util.toCurrencyFormatInt
 import com.binar.foodorder.viewmodel.DetailViewModel
 
 class DetailFoodActivity : AppCompatActivity() {
@@ -44,9 +45,9 @@ class DetailFoodActivity : AppCompatActivity() {
 
     private fun bindFood(food: Food?) {
         food?.let { itemFood ->
-            binding.imageView.load(itemFood.Image)
-            binding.tvFoodDetail.text = itemFood.name
-            binding.tvDescription.text = itemFood.description
+            binding.imageView.load(itemFood.imageUrl)
+            binding.tvFoodDetail.text = itemFood.nama
+            binding.tvDescription.text = itemFood.detail
 
         }
     }

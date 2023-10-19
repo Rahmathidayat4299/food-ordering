@@ -40,6 +40,16 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        buildConfig = true
+    }
+    flavorDimensions += "env"
+    productFlavors {
+        create("production") {
+            buildConfigField("String", "BASE_URL", "\"https://7a3a7859-4aee-4c3b-ab96-0e20c7a2cea5.mock.pstmn.io\"")
+        }
+        create("integration") {
+            buildConfigField("String", "BASE_URL", "\"https://7a3a7859-4aee-4c3b-ab96-0e20c7a2cea5.mock.pstmn.io\"")
+        }
     }
 }
 
@@ -69,5 +79,8 @@ dependencies {
     implementation ("androidx.room:room-ktx:2.5.2")
     ksp("androidx.room:room-compiler:2.5.0")
     implementation ("com.airbnb.android:lottie:3.4.0")
-
+    //retrofit & okhttp
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation ("com.squareup.okhttp3:okhttp:4.11.0")
 }

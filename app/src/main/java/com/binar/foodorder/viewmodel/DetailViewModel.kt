@@ -32,16 +32,18 @@ class DetailViewModel(
         get() = _addToCartResult
 
     fun add() {
+        val harga = food?.harga?.toDouble()
         val count = (productCountLiveData.value ?: 0) + 1
         productCountLiveData.postValue(count)
-        priceLiveData.postValue(food?.Price?.times(count) ?: 0.0)
+        priceLiveData.postValue(harga?.times(count)?:0.0)
     }
 
     fun minus() {
+val harga = food?.harga?.toDouble()
         if ((productCountLiveData.value ?: 0) > 0) {
             val count = (productCountLiveData.value ?: 0) - 1
             productCountLiveData.postValue(count)
-            priceLiveData.postValue(food?.Price?.times(count) ?: 0.0)
+            priceLiveData.postValue(harga?.times(count)?:0.0)
         }
     }
 

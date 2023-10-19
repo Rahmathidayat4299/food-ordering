@@ -3,6 +3,7 @@ package com.binar.foodorder.data.repository
 import com.binar.foodorder.data.local.database.datasource.CartDataSource
 import com.binar.foodorder.data.local.database.entity.CartEntity
 import com.binar.foodorder.data.local.database.mapper.toCartEntity
+import com.binar.foodorder.data.local.database.mapper.toCartList
 import com.binar.foodorder.data.local.database.mapper.toCartProductList
 import com.binar.foodorder.model.Cart
 import com.binar.foodorder.model.CartFood
@@ -17,7 +18,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 
 interface CartRepository {
-    fun getUserCartData(): Flow<ResultWrapper<Pair<List<CartFood>, Double>>>
+    fun getUserCartData(): Flow<ResultWrapper<Pair<List<Cart>, Double>>>
     suspend fun createCart(food: Food, totalQuantity: Int): Flow<ResultWrapper<Boolean>>
     suspend fun decreaseCart(item: Cart): Flow<ResultWrapper<Boolean>>
     suspend fun increaseCart(item: Cart): Flow<ResultWrapper<Boolean>>
@@ -29,13 +30,13 @@ class CartRepositoryImpl(
     private val dataSource: CartDataSource
 ) : CartRepository {
 
-    override fun getUserCartData(): Flow<ResultWrapper<Pair<List<CartFood>, Double>>> {
+    override fun getUserCartData(): Flow<ResultWrapper<Pair<List<Cart>, Double>>> {
         return dataSource.getAllCarts().map {
             proceed {
-                val cartList = it.toCartProductList()
+                val cartList = it.toCartList()
                 val totalPrice = cartList.sumOf {
-                    val quantity = it.cart.itemQuantity
-                    val pricePerItem = it.food.Price
+                    val quantity = it.itemQuantity
+                    val pricePerItem = it.foodPrice?:0.0
                     quantity * pricePerItem
                 }
                 Pair(cartList, totalPrice)
@@ -54,7 +55,12 @@ class CartRepositoryImpl(
         return food.id?.let { foodId ->
             proceedFlow {
                 val affectedRow = dataSource.insertCart(
-                    CartEntity(foodId = foodId, itemQuantity = totalQuantity)
+                    CartEntity(
+                        foodId = foodId,
+                        itemQuantity = totalQuantity,
+                        foodName = food.nama,
+                        foodPrice = food.harga.toDouble(),
+                        foodImgUrl = food.imageUrl)
                 )
                 affectedRow > 0
             }
