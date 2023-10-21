@@ -5,14 +5,20 @@ import com.binar.foodorder.data.local.database.entity.CartEntity
 import com.binar.foodorder.data.local.database.mapper.toCartEntity
 import com.binar.foodorder.data.local.database.mapper.toCartList
 import com.binar.foodorder.data.local.database.mapper.toCartProductList
+import com.binar.foodorder.data.network.api.FoodNetworkDataSource
+import com.binar.foodorder.data.network.firebase.FirebaseAuthDataSource
+import com.binar.foodorder.data.network.model.OrderItem
+import com.binar.foodorder.data.network.model.OrderRequest
 import com.binar.foodorder.model.Cart
 import com.binar.foodorder.model.CartFood
 import com.binar.foodorder.model.Food
+import com.binar.foodorder.model.toUser
 import com.binar.foodorder.util.ResultWrapper
 import com.binar.foodorder.util.proceed
 import com.binar.foodorder.util.proceedFlow
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
@@ -24,10 +30,13 @@ interface CartRepository {
     suspend fun increaseCart(item: Cart): Flow<ResultWrapper<Boolean>>
     suspend fun setCartNotes(item: Cart): Flow<ResultWrapper<Boolean>>
     suspend fun deleteCart(item: Cart): Flow<ResultWrapper<Boolean>>
+    suspend fun createOrder(items:List<Cart>):Flow<ResultWrapper<Boolean>>
 }
 
 class CartRepositoryImpl(
-    private val dataSource: CartDataSource
+    private val dataSource: CartDataSource,
+    private val foodNetworkDataSource: FoodNetworkDataSource,
+    private val user:FirebaseAuthDataSource
 ) : CartRepository {
 
     override fun getUserCartData(): Flow<ResultWrapper<Pair<List<Cart>, Double>>> {
@@ -93,6 +102,24 @@ class CartRepositoryImpl(
 
     override suspend fun deleteCart(item: Cart): Flow<ResultWrapper<Boolean>> {
         return proceedFlow { dataSource.deleteCart(item.toCartEntity()) > 0 }
+    }
+
+    override suspend fun createOrder(items: List<Cart>): Flow<ResultWrapper<Boolean>> {
+        return proceedFlow {
+            val orderItems = items.map {
+                OrderItem(
+                    it.itemNotes,
+                    it.foodPrice.toInt(),
+                    it.foodName.toString(),
+                    it.itemQuantity
+                )
+            }
+            val totalQuantity = dataSource.getAllCarts().first()
+            val totalPrice = totalQuantity.sumOf { it.foodPrice * it.itemQuantity }
+            val user = user.getCurrentUser().toUser()?.fullName
+            val orderRequest = OrderRequest(orderItems, totalPrice.toInt(), user ?: "")
+            foodNetworkDataSource.createOrder(orderRequest).status
+        }
     }
 
 }

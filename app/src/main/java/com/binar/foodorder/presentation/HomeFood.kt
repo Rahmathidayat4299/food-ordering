@@ -78,8 +78,9 @@ class HomeFood : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setUpRecycleview()
         setUpRecycleviewCategory()
+        setUpRecycleview()
+
         Log.d(requireContext().toString(), "Category:${setUpRecycleviewCategory()} ")
         setViewList()
 //        testCategoryMie("mie")
@@ -104,6 +105,7 @@ class HomeFood : Fragment() {
                     binding.recycleviewFood.isVisible = true
                     val listFood = it.payload?: emptyList()
                     adapter.setData(listFood)
+                    binding.recycleviewFood.itemAnimator = null
 //                    Log.d("ResponseFoodApi", "setUpRecycleview:$listFood ")
 //                    result.payload?.data.let { foods ->
 //                        adapter.setData(foods)

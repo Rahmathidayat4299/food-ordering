@@ -1,14 +1,14 @@
 package com.binar.foodorder.data.repository
 
 import com.binar.foodorder.data.local.database.AppDatabase
-import com.binar.foodorder.data.local.database.entity.FoodEntity
 import com.binar.foodorder.data.network.api.CategoryNetworkDataSource
 import com.binar.foodorder.data.network.api.FoodNetworkDataSource
+import com.binar.foodorder.data.network.model.OrderRequest
+import com.binar.foodorder.data.network.model.OrderResponse
 import com.binar.foodorder.model.Category
 import com.binar.foodorder.model.Food
 import com.binar.foodorder.model.toCategory
 import com.binar.foodorder.model.toFood
-import com.binar.foodorder.model.toFoodEntity
 import com.binar.foodorder.util.ResultWrapper
 import com.binar.foodorder.util.proceedFlow
 import kotlinx.coroutines.flow.Flow
@@ -17,6 +17,7 @@ interface FoodsRepository {
     suspend fun getFoods(): Flow<ResultWrapper<List<Food>>>
     suspend fun getListCategory(): Flow<ResultWrapper<List<Category>>>
     suspend fun getCategory(category:String): Flow<ResultWrapper<List<Food>>>
+
 
 }
 
@@ -42,6 +43,8 @@ class FoodsRepositoryImpl(
             categoryNetworkDataSource.getCategory(category).data.toFood()
         }
     }
+
+
 
 
 }

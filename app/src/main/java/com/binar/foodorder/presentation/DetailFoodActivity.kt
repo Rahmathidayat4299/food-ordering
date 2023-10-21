@@ -12,6 +12,9 @@ import com.binar.foodorder.R
 import com.binar.foodorder.data.local.database.AppDatabase
 import com.binar.foodorder.data.local.database.datasource.CartDataSource
 import com.binar.foodorder.data.local.database.datasource.CartDatabaseDataSource
+import com.binar.foodorder.data.network.api.FoodNetworkDataSourceImpl
+import com.binar.foodorder.data.network.api.FoodService
+import com.binar.foodorder.data.network.firebase.FirebaseAuthDataSourceImpl
 import com.binar.foodorder.data.repository.CartRepository
 import com.binar.foodorder.data.repository.CartRepositoryImpl
 import com.binar.foodorder.databinding.ActivityDetailFoodBinding
@@ -21,6 +24,7 @@ import com.binar.foodorder.util.proceedWhen
 import com.binar.foodorder.util.toCurrencyFormat
 import com.binar.foodorder.util.toCurrencyFormatInt
 import com.binar.foodorder.viewmodel.DetailViewModel
+import com.google.firebase.auth.FirebaseAuth
 
 class DetailFoodActivity : AppCompatActivity() {
     private val binding: ActivityDetailFoodBinding by lazy {
@@ -29,8 +33,14 @@ class DetailFoodActivity : AppCompatActivity() {
     private val viewModel: DetailViewModel by viewModels {
         val database = AppDatabase.getInstance(this)
         val cartDao = database.cartDao()
+        val service: FoodService by lazy {
+            FoodService.invoke()
+        }
+        val firebaseAuth = FirebaseAuth.getInstance()
+        val firebaseDataSource = FirebaseAuthDataSourceImpl(firebaseAuth)
+        val foodNetworkDataSource = FoodNetworkDataSourceImpl(service)
         val cartDataSource: CartDataSource = CartDatabaseDataSource(cartDao)
-        val repo: CartRepository = CartRepositoryImpl(cartDataSource)
+        val repo: CartRepository = CartRepositoryImpl(cartDataSource,foodNetworkDataSource,firebaseDataSource)
         GenericViewModelFactory.create(DetailViewModel(intent.extras, repo))
     }
 

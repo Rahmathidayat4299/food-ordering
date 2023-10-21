@@ -21,6 +21,10 @@ class FoodAdapter(private val onItemClick: (Food) -> Unit, private val viewModel
         override fun areItemsTheSame(oldItem: Food, newItem: Food): Boolean {
             return oldItem.nama == newItem.nama &&
                     oldItem.hargaFormat == newItem.hargaFormat &&
+                    oldItem.id == newItem.id &&
+                    oldItem.imageUrl == newItem.imageUrl &&
+                    oldItem.alamatResto == newItem.alamatResto &&
+                    oldItem.harga == newItem.harga &&
                     oldItem.detail == newItem.detail
         }
 
