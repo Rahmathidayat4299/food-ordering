@@ -9,7 +9,7 @@ data class OrderRequest(
     @SerializedName("orders")
     val orders: List<OrderItem>,
     @SerializedName("total")
-    val total: Int,
+    val total: Int?,
     @SerializedName("username")
-    val username: String
+    val username: String?
 )

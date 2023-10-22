@@ -1,5 +1,6 @@
 package com.binar.foodorder.data.repository
 
+import android.util.Log
 import com.binar.foodorder.data.local.database.datasource.CartDataSource
 import com.binar.foodorder.data.local.database.entity.CartEntity
 import com.binar.foodorder.data.local.database.mapper.toCartEntity
@@ -108,17 +109,27 @@ class CartRepositoryImpl(
         return proceedFlow {
             val orderItems = items.map {
                 OrderItem(
-                    it.itemNotes,
-                    it.foodPrice.toInt(),
-                    it.foodName.toString(),
-                    it.itemQuantity
+                    catatan = it.itemNotes,
+                    harga = it.foodPrice.toInt(),
+                    nama = it.foodName.toString(),
+                    qty = it.itemQuantity
                 )
             }
+            Log.d("CartRepositoryImpl", "OrderItems: $orderItems") // Add this line to log orderItems
+
             val totalQuantity = dataSource.getAllCarts().first()
             val totalPrice = totalQuantity.sumOf { it.foodPrice * it.itemQuantity }
             val user = user.getCurrentUser().toUser()?.fullName
-            val orderRequest = OrderRequest(orderItems, totalPrice.toInt(), user ?: "")
-            foodNetworkDataSource.createOrder(orderRequest).status
+            val orderRequest = OrderRequest(
+                orders = orderItems, total = totalPrice.toInt(), username = user.toString() // Fix total here
+            )
+            Log.d("CartRepositoryImpl", "OrderRequest: $orderRequest") // Add this line to log orderRequest
+
+            val createOrderResponse = foodNetworkDataSource.createOrder(orderRequest)
+            Log.d("CartRepositoryImpl", "CreateOrderResponse: $createOrderResponse") // Add this line to log the response
+
+            val isOrderCreated = createOrderResponse.status == true
+            isOrderCreated
         }
     }
 

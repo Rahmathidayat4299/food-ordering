@@ -3,13 +3,11 @@ package com.binar.foodorder.presentation
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.binar.foodorder.R
 import com.binar.foodorder.adapter.CartListAdapter
@@ -17,17 +15,12 @@ import com.binar.foodorder.adapter.CartListener
 import com.binar.foodorder.data.local.database.AppDatabase
 import com.binar.foodorder.data.local.database.datasource.CartDataSource
 import com.binar.foodorder.data.local.database.datasource.CartDatabaseDataSource
-import com.binar.foodorder.data.network.api.CategoryNetworkDataSource
-import com.binar.foodorder.data.network.api.CategoryNetworkDataSourceImpl
 import com.binar.foodorder.data.network.api.FoodNetworkDataSource
 import com.binar.foodorder.data.network.api.FoodNetworkDataSourceImpl
 import com.binar.foodorder.data.network.api.FoodService
 import com.binar.foodorder.data.network.firebase.FirebaseAuthDataSourceImpl
-import com.binar.foodorder.data.network.model.OrderRequest
 import com.binar.foodorder.data.repository.CartRepository
 import com.binar.foodorder.data.repository.CartRepositoryImpl
-import com.binar.foodorder.data.repository.FoodsRepository
-import com.binar.foodorder.data.repository.FoodsRepositoryImpl
 import com.binar.foodorder.data.repository.UserRepositoryImpl
 import com.binar.foodorder.databinding.ActivityConfirmationOrderBinding
 import com.binar.foodorder.model.Cart
@@ -36,7 +29,6 @@ import com.binar.foodorder.util.proceedWhen
 import com.binar.foodorder.util.toCurrencyFormat
 import com.binar.foodorder.viewmodel.CartViewModel
 import com.binar.foodorder.viewmodel.ConfirmationOrderViewModel
-import com.binar.foodorder.viewmodel.FoodsViewModel
 import com.binar.foodorder.viewmodel.ProfileViewModel
 import com.google.firebase.auth.FirebaseAuth
 
@@ -46,22 +38,6 @@ class ConfirmationOrderActivity : AppCompatActivity() {
         ActivityConfirmationOrderBinding.inflate(layoutInflater)
     }
 
-    private val viewModelProfile: ProfileViewModel by viewModels {
-        GenericViewModelFactory.create(createViewModel())
-    }
-    private val foodsViewModelApi: ConfirmationOrderViewModel by viewModels {
-        val service: FoodService by lazy {
-            FoodService.invoke()
-        }
-        val firebaseAuth = FirebaseAuth.getInstance()
-        val database = AppDatabase.getInstance(this)
-        val cartDao = database.cartDao()
-        val cartDataSource = CartDatabaseDataSource(cartDao)
-        val dataUser = FirebaseAuthDataSourceImpl(firebaseAuth)
-        val nds: FoodNetworkDataSource = FoodNetworkDataSourceImpl(service)
-        val repo: CartRepository = CartRepositoryImpl(cartDataSource, nds, dataUser)
-        GenericViewModelFactory.create(ConfirmationOrderViewModel(repo))
-    }
     private val viewModel: CartViewModel by viewModels {
         val service: FoodService by lazy {
             FoodService.invoke()
@@ -102,34 +78,29 @@ class ConfirmationOrderActivity : AppCompatActivity() {
         setContentView(binding.root)
         setUpRecycleview()
         back()
-        setOnclick()
         observeOrderSuccess()
+        setOnclick()
+
     }
 
     private fun setOnclick() {
 
         binding.btnCheckout.setOnClickListener {
-            foodsViewModelApi.createOrder()
-//            Toast.makeText(this, "order succes", Toast.LENGTH_SHORT).show()
-            Log.d("Post Request", "setOnclick: ${foodsViewModelApi.createOrder()}")
-
-
+            viewModel.createOrder()
         }
     }
 
     private fun observeOrderSuccess() {
-        foodsViewModelApi.confirmationOrder.observe(this) {
-            it.proceedWhen(
+        viewModel.confirmationOrder.observe(this){result->
+            result.proceedWhen(
                 doOnSuccess = {
                     showDialogCheckoutSuccess()
-                    Toast.makeText(this, "order succes", Toast.LENGTH_SHORT).show()
-
-                    Log.d("Post Request Sukses", "setOnclick: ${foodsViewModelApi.createOrder()}")
                 },
                 doOnError = {
-                    Toast.makeText(this, "order gagal", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Error post ${it.message.toString()}", Toast.LENGTH_SHORT).show()
                 }
             )
+
         }
     }
 
@@ -141,24 +112,7 @@ class ConfirmationOrderActivity : AppCompatActivity() {
             }.create().show()
     }
 
-    //    private fun showDialog(){
-//
-//        binding.btnCheckout.setOnClickListener {
-//
-//            foodsViewModelApi.createOrder()
-//            val builder = AlertDialog.Builder(this, R.style.CustomAlertDialog)
-//                .create()
-//            val view = layoutInflater.inflate(R.layout.dialog_view,null)
-//            val  button = view.findViewById<Button>(R.id.dialogDismiss_button)
-//            builder.setView(view)
-//            button.setOnClickListener {
-//                builder.dismiss()
-//                navigateToHome()
-//            }
-//            builder.setCanceledOnTouchOutside(false)
-//            builder.show()
-//        }
-//    }
+
     private fun setUpRecycleview() {
         val recyclerView = binding.recycleViewOrder
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -173,6 +127,7 @@ class ConfirmationOrderActivity : AppCompatActivity() {
                     result.payload?.let { (carts, totalPrice) ->
                         adapter.submitData(carts)
                         binding.tvPembayaran.text = totalPrice.toCurrencyFormat()
+                        Log.d("Testt", "setUpRecycleview:${result.payload.first} ")
                     }
                 }, doOnLoading = {
                     binding.progresbarOrderConfirmation.isVisible = true

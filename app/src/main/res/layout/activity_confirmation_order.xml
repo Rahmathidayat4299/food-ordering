@@ -221,7 +221,7 @@
             android:textStyle="bold"
             app:layout_constraintTop_toBottomOf="@id/tv_ringkasan_pembayaran"
             app:layout_constraintEnd_toEndOf="parent"
-            android:text="@string/rp_40_000"/>
+            tools:text="@string/rp_40_000"/>
         <Button
             android:id="@+id/btn_checkout"
             android:layout_width="match_parent"
