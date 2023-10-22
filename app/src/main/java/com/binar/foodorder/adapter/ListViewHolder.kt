@@ -16,9 +16,9 @@ class ListViewHolder(
     RecyclerView.ViewHolder(itemListView.root) {
 
     fun bindFullWidth(food: Food) {
-        itemListView.tvFoodname.text = food.name
-        itemListView.tvFoodprice.text = food.Price.toCurrencyFormat()
-        itemListView.tvFoodimage.load(food.Image)
+        itemListView.tvFoodname.text = food.nama
+        itemListView.tvFoodprice.text = food.hargaFormat
+        itemListView.tvFoodimage.load(food.imageUrl)
         itemListView.root.setOnClickListener { onItemClick.invoke(food) }
     }
 

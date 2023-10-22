@@ -38,11 +38,11 @@ class DetailFood : Fragment() {
         val image = binding.imageView
 
         food.let {
-            val priceFood = "Rp. ${food?.Price?.toInt()}"
-            image.load(food?.Image)
-            binding.tvFoodDetail.text = food?.name
+            val priceFood = "Rp. ${food?.hargaFormat?.toInt()}"
+            image.load(food?.imageUrl)
+            binding.tvFoodDetail.text = food?.nama
             binding.textPriceDetail.text = priceFood
-            binding.tvDescription.text = food?.description
+            binding.tvDescription.text = food?.detail
         }
         binding.mapView.setOnClickListener {
             val gmmIntentUri = Uri.parse("https://maps.app.goo.gl/h4wQKqaBuXzftGK77")
@@ -69,7 +69,7 @@ class DetailFood : Fragment() {
 
     private fun updateCartButton() {
         val food = food
-        val pricePerItem = food?.Price ?: 0
+        val pricePerItem = food?.hargaFormat?.toDouble() ?: 0
 
         val totalPrice = quantity * pricePerItem.toInt()
         val priceFood = "Rp. $totalPrice"

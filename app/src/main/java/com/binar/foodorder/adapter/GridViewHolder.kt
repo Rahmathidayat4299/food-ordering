@@ -14,9 +14,9 @@ class GridViewHolder(
     private val onItemClick: (Food) -> Unit
 ) : RecyclerView.ViewHolder(binding.root) {
     fun bindDefault(food: Food) {
-        binding.tvFoodname.text = food.name
-        binding.tvFoodprice.text = food.Price.toCurrencyFormat()
-        binding.tvFoodimage.load(food.Image)
+        binding.tvFoodname.text = food.nama
+        binding.tvFoodprice.text = food.hargaFormat
+        binding.tvFoodimage.load(food.imageUrl)
         binding.root.setOnClickListener {
             onItemClick.invoke(food)
         }

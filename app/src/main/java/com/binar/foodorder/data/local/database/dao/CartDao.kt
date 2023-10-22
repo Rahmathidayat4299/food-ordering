@@ -14,10 +14,10 @@ import kotlinx.coroutines.flow.Flow
 interface CartDao {
 
     @Query("SELECT * FROM CARTS")
-    fun getAllCarts(): Flow<List<CartFoodRelation>>
+    fun getAllCarts(): Flow<List<CartEntity>>
 
     @Query("SELECT * FROM CARTS WHERE id == :cartId")
-    fun getCartById(cartId: Int): Flow<CartFoodRelation>
+    fun getCartById(cartId: Int): Flow<CartEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCart(cart: CartEntity): Long

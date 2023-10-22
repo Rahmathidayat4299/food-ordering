@@ -5,30 +5,30 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.binar.foodorder.data.dummy.DummyFoodDataSourceImpl
 import com.binar.foodorder.data.local.database.AppDatabase.Companion.getInstance
 import com.binar.foodorder.data.local.database.dao.CartDao
 import com.binar.foodorder.data.local.database.dao.FoodDao
 import com.binar.foodorder.data.local.database.entity.CartEntity
 import com.binar.foodorder.data.local.database.entity.FoodEntity
-import com.binar.foodorder.data.local.database.mapper.toFoodEntity
+import com.binar.foodorder.data.repository.FoodsRepository
+import com.binar.foodorder.data.repository.FoodsRepositoryImpl
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 @Database(
-    entities = [CartEntity::class, FoodEntity::class],
-    version = 1,
+    entities = [CartEntity::class],
+    version = 2,
     exportSchema = true
 )
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun cartDao(): CartDao
-    abstract fun foodDao(): FoodDao
+//    abstract fun foodDao(): FoodDao
 
     companion object {
-        private const val DB_NAME = "Food.db"
+        private const val DB_NAME = "Restaurant.db"
 
         @Volatile
         private var INSTANCE: AppDatabase? = null
@@ -42,7 +42,6 @@ abstract class AppDatabase : RoomDatabase() {
                     AppDatabase::class.java,
                     DB_NAME
                 )
-                    .addCallback(DatabaseSeederCallback(context))
                     .fallbackToDestructiveMigration()
                     .build()
                 INSTANCE = instance
@@ -53,36 +52,39 @@ abstract class AppDatabase : RoomDatabase() {
     }
 }
 
-class DatabaseSeederCallback(private val context: Context) : RoomDatabase.Callback() {
-    private val job = Job()
-    private val scope = CoroutineScope(Dispatchers.Main + job)
+//class DatabaseSeederCallback(private val context: Context) : RoomDatabase.Callback() {
+//    private val job = Job()
+//    private val scope = CoroutineScope(Dispatchers.Main + job)
+//
+//    override fun onCreate(db: SupportSQLiteDatabase) {
+//        super.onCreate(db)
+//        scope.launch {
+//            getInstance(context).foodDao().insertFood(prepopulateFoods())
+//            getInstance(context).cartDao().insertCarts(prepopulateCarts())
+//
+////            repository.insertFoodsFromNetworkToDatabase()
+//        }
+//    }
+//
+//    private fun prepopulateFoods(): List<FoodEntity> {
+//
+////        return DummyFoodDataSourceImpl().getFoodList().toFoodEntity()
+//        return emptyList()
+//    }
 
-    override fun onCreate(db: SupportSQLiteDatabase) {
-        super.onCreate(db)
-        scope.launch {
-            getInstance(context).foodDao().insertFood(prepopulateFoods())
-            getInstance(context).cartDao().insertCarts(prepopulateCarts())
-        }
-    }
-
-    private fun prepopulateFoods(): List<FoodEntity> {
-        return DummyFoodDataSourceImpl().getFoodList().toFoodEntity()
-    }
-
-    private fun prepopulateCarts(): List<CartEntity> {
-        return mutableListOf(
-            CartEntity(
-                id = 1,
-                foodId = 1,
-                itemNotes = "makanan yang fresh ya",
-                itemQuantity = 3
-            ),
-            CartEntity(
-                id = 2,
-                foodId = 2,
-                itemNotes = "makanan yang fresh yaaaaaa",
-                itemQuantity = 6
-            ),
-        )
-    }
-}
+//    private fun prepopulateCarts(): List<CartEntity> {
+//        return mutableListOf(
+//            CartEntity(
+//                id = 1,
+//                foodId = 1,
+//                itemNotes = "makanan yang fresh ya",
+//                itemQuantity = 3
+//            ),
+//            CartEntity(
+//                id = 2,
+//                foodId = 2,
+//                itemNotes = "makanan yang fresh yaaaaaa",
+//                itemQuantity = 6
+//            ),
+//        )
+//    }

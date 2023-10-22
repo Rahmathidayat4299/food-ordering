@@ -9,15 +9,23 @@ fun CartEntity?.toCart() = Cart(
     id = this?.id ?: 0,
     foodId = this?.foodId ?: 0,
     itemQuantity = this?.itemQuantity ?: 0,
-    itemNotes = this?.itemNotes.orEmpty()
+    itemNotes = this?.itemNotes.orEmpty(),
+    foodImgUrl = this?.foodImgUrl.orEmpty(),
+    foodName = this?.foodName.orEmpty(),
+    foodPrice = this?.foodPrice ?: 0.0
 )
+
 // View Object > Entity
 fun Cart?.toCartEntity() = CartEntity(
     id = this?.id,
     foodId = this?.foodId ?: 0,
     itemQuantity = this?.itemQuantity ?: 0,
-    itemNotes = this?.itemNotes.orEmpty()
+    itemNotes = this?.itemNotes.orEmpty(),
+    foodImgUrl = this?.foodImgUrl.orEmpty(),
+    foodName = this?.foodName.orEmpty(),
+    foodPrice = this?.foodPrice ?: 0.0
 )
+
 // list of entity > list of view object
 fun List<CartEntity?>.toCartList() = this.map { it.toCart() }
 
@@ -27,5 +35,6 @@ fun CartFoodRelation.toCartFood() = CartFood(
 
     food = this.food.toFood()
 )
+
 // list of entity > list of view object
 fun List<CartFoodRelation>.toCartProductList() = this.map { it.toCartFood() }

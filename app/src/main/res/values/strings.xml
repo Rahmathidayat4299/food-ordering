@@ -71,5 +71,6 @@
     <string name="text_highlight_login_here">Login Here</string>
     <string name="text_highlight_register">Register Here</string>
     <string name="text_error_name_cannot_empty">Name cannot empty</string>
+    <string name="text_okay">okay</string>
 
 </resources>

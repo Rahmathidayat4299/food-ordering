@@ -12,25 +12,25 @@ interface FoodDataSource {
     suspend fun updateProduct(food: FoodEntity): Int
 }
 
-class FoodDatabaseDataSource(private val dao: FoodDao) : FoodDataSource {
-    override fun getAllFoods(): Flow<List<FoodEntity>> {
-        return dao.getAllFoods()
-    }
-
-    override fun getProductById(id: Int): Flow<FoodEntity> {
-        return dao.getProductById(id)
-    }
-
-    override suspend fun insertProduct(food: List<FoodEntity>) {
-        return dao.insertFood(food)
-    }
-
-    override suspend fun deleteProduct(food: FoodEntity): Int {
-        return dao.deleteProduct(food)
-    }
-
-    override suspend fun updateProduct(food: FoodEntity): Int {
-        return dao.updateProduct(food)
-    }
+class FoodDatabaseDataSource(private val dao: FoodDao)  {
+//    override fun getAllFoods(): Flow<List<FoodEntity>> {
+//        return dao.getAllFoods()
+//    }
+//
+//    override fun getProductById(id: Int): Flow<FoodEntity> {
+//        return dao.getProductById(id)
+//    }
+//
+//    override suspend fun insertProduct(food: List<FoodEntity>) {
+//        return dao.insertFood(food)
+//    }
+//
+//    override suspend fun deleteProduct(food: FoodEntity): Int {
+//        return dao.deleteProduct(food)
+//    }
+//
+//    override suspend fun updateProduct(food: FoodEntity): Int {
+//        return dao.updateProduct(food)
+//    }
 
 }

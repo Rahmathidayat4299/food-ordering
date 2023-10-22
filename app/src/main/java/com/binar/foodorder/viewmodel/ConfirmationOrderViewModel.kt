@@ -11,41 +11,24 @@ import com.binar.foodorder.model.Cart
 import com.binar.foodorder.util.ResultWrapper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.flow.collect
 
-class CartViewModel(private val repo: CartRepository) : ViewModel() {
-
-    val cartList = repo.getUserCartData().asLiveData(Dispatchers.IO)
-
-    fun decreaseCart(item: Cart) {
-        viewModelScope.launch { repo.decreaseCart(item).collect() }
-    }
-    fun increaseCart(item: Cart) {
-        viewModelScope.launch { repo.increaseCart(item).collect() }
-    }
-    fun removeCart(item: Cart) {
-        viewModelScope.launch { repo.deleteCart(item).collect() }
-    }
-    fun setCartNotes(item: Cart) {
-        viewModelScope.launch { repo.setCartNotes(item).collect() }
-    }
+class ConfirmationOrderViewModel(
+    private val repo:CartRepository
+): ViewModel() {
+    val carList = repo.getUserCartData().asLiveData(Dispatchers.IO)
 
     private val _confirmationOrder = MutableLiveData<ResultWrapper<Boolean>>()
-    val confirmationOrder : LiveData<ResultWrapper<Boolean>>
+    val confirmationOrder :LiveData<ResultWrapper<Boolean>>
         get() = _confirmationOrder
 
     fun createOrder(){
         viewModelScope.launch(Dispatchers.IO) {
-            val list =cartList.value?.payload?.first ?:return@launch
+             val list =carList.value?.payload?.first ?:return@launch
             Log.d("ConfirmViewModel", "createOrder:$list ")
             repo.createOrder(list).collect{
                 _confirmationOrder.postValue(it)
             }
         }
     }
-
-
-
-
 
 }
