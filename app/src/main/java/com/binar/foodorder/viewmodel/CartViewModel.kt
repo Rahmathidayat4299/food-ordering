@@ -44,7 +44,11 @@ class CartViewModel(private val repo: CartRepository) : ViewModel() {
         }
     }
 
-
+fun clearCart(){
+    viewModelScope.launch(Dispatchers.IO) {
+        repo.deleteAll()
+    }
+}
 
 
 

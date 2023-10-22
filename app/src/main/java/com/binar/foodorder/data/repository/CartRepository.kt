@@ -31,13 +31,14 @@ interface CartRepository {
     suspend fun increaseCart(item: Cart): Flow<ResultWrapper<Boolean>>
     suspend fun setCartNotes(item: Cart): Flow<ResultWrapper<Boolean>>
     suspend fun deleteCart(item: Cart): Flow<ResultWrapper<Boolean>>
-    suspend fun createOrder(items:List<Cart>):Flow<ResultWrapper<Boolean>>
+    suspend fun createOrder(items: List<Cart>): Flow<ResultWrapper<Boolean>>
+    suspend fun deleteAll()
 }
 
 class CartRepositoryImpl(
     private val dataSource: CartDataSource,
     private val foodNetworkDataSource: FoodNetworkDataSource,
-    private val user:FirebaseAuthDataSource
+    private val user: FirebaseAuthDataSource
 ) : CartRepository {
 
     override fun getUserCartData(): Flow<ResultWrapper<Pair<List<Cart>, Double>>> {
@@ -46,7 +47,7 @@ class CartRepositoryImpl(
                 val cartList = it.toCartList()
                 val totalPrice = cartList.sumOf {
                     val quantity = it.itemQuantity
-                    val pricePerItem = it.foodPrice?:0.0
+                    val pricePerItem = it.foodPrice ?: 0.0
                     quantity * pricePerItem
                 }
                 Pair(cartList, totalPrice)
@@ -70,7 +71,8 @@ class CartRepositoryImpl(
                         itemQuantity = totalQuantity,
                         foodName = food.nama,
                         foodPrice = food.harga.toDouble(),
-                        foodImgUrl = food.imageUrl)
+                        foodImgUrl = food.imageUrl
+                    )
                 )
                 affectedRow > 0
             }
@@ -115,22 +117,37 @@ class CartRepositoryImpl(
                     qty = it.itemQuantity
                 )
             }
-            Log.d("CartRepositoryImpl", "OrderItems: $orderItems") // Add this line to log orderItems
+            Log.d(
+                "CartRepositoryImpl",
+                "OrderItems: $orderItems"
+            ) // Add this line to log orderItems
 
             val totalQuantity = dataSource.getAllCarts().first()
             val totalPrice = totalQuantity.sumOf { it.foodPrice * it.itemQuantity }
             val user = user.getCurrentUser().toUser()?.fullName
             val orderRequest = OrderRequest(
-                orders = orderItems, total = totalPrice.toInt(), username = user.toString() // Fix total here
+                orders = orderItems,
+                total = totalPrice.toInt(),
+                username = user.toString() // Fix total here
             )
-            Log.d("CartRepositoryImpl", "OrderRequest: $orderRequest") // Add this line to log orderRequest
+            Log.d(
+                "CartRepositoryImpl",
+                "OrderRequest: $orderRequest"
+            ) // Add this line to log orderRequest
 
             val createOrderResponse = foodNetworkDataSource.createOrder(orderRequest)
-            Log.d("CartRepositoryImpl", "CreateOrderResponse: $createOrderResponse") // Add this line to log the response
+            Log.d(
+                "CartRepositoryImpl",
+                "CreateOrderResponse: $createOrderResponse"
+            ) // Add this line to log the response
 
             val isOrderCreated = createOrderResponse.status == true
             isOrderCreated
         }
+    }
+
+    override suspend fun deleteAll() {
+        dataSource.deleteAll()
     }
 
 }

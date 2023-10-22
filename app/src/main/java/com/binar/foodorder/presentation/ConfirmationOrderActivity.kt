@@ -95,6 +95,7 @@ class ConfirmationOrderActivity : AppCompatActivity() {
             result.proceedWhen(
                 doOnSuccess = {
                     showDialogCheckoutSuccess()
+                    viewModel.clearCart()
                 },
                 doOnError = {
                     Toast.makeText(this, "Error post ${it.message.toString()}", Toast.LENGTH_SHORT).show()
