@@ -10,6 +10,7 @@ import com.binar.foodorder.R
 import com.binar.foodorder.data.network.firebase.FirebaseAuthDataSourceImpl
 import com.binar.foodorder.data.repository.UserRepositoryImpl
 import com.binar.foodorder.databinding.ActivityRegisterBinding
+import com.binar.foodorder.di.AppInjection
 import com.binar.foodorder.util.GenericViewModelFactory
 import com.binar.foodorder.util.emailValid
 import com.binar.foodorder.util.highLightWord
@@ -23,15 +24,9 @@ class RegisterActivity : AppCompatActivity() {
         ActivityRegisterBinding.inflate(layoutInflater)
     }
     private val viewModel: RegisterViewModel by viewModels {
-        GenericViewModelFactory.create(createViewModel())
+        GenericViewModelFactory.create(RegisterViewModel(AppInjection.repo))
     }
 
-    private fun createViewModel(): RegisterViewModel {
-        val firebaseAuth = FirebaseAuth.getInstance()
-        val dataSource = FirebaseAuthDataSourceImpl(firebaseAuth)
-        val repo = UserRepositoryImpl(dataSource)
-        return RegisterViewModel(repo)
-    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)

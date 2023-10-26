@@ -20,6 +20,7 @@ import com.binar.foodorder.R
 import com.binar.foodorder.data.network.firebase.FirebaseAuthDataSourceImpl
 import com.binar.foodorder.data.repository.UserRepositoryImpl
 import com.binar.foodorder.databinding.FragmentProfilBinding
+import com.binar.foodorder.di.AppInjection
 import com.binar.foodorder.util.GenericViewModelFactory
 import com.binar.foodorder.util.proceedWhen
 import com.binar.foodorder.viewmodel.ProfileViewModel
@@ -30,7 +31,7 @@ import com.google.firebase.auth.FirebaseAuth
 class ProfilFragment : Fragment() {
     private lateinit var binding: FragmentProfilBinding
     private val viewModel: ProfileViewModel by viewModels {
-        GenericViewModelFactory.create(createViewModel())
+        GenericViewModelFactory.create(ProfileViewModel(AppInjection.repo))
     }
     private val pickMedia =
         this.registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
@@ -43,9 +44,6 @@ class ProfilFragment : Fragment() {
         viewModel.updateProfilePicture(uri)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -183,13 +181,6 @@ class ProfilFragment : Fragment() {
                 },
             )
         }
-    }
-
-    private fun createViewModel(): ProfileViewModel {
-        val firebaseAuth = FirebaseAuth.getInstance()
-        val dataSource = FirebaseAuthDataSourceImpl(firebaseAuth)
-        val repo = UserRepositoryImpl(dataSource)
-        return ProfileViewModel(repo)
     }
 }
 

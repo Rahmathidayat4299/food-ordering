@@ -10,6 +10,7 @@ import com.binar.foodorder.R
 import com.binar.foodorder.data.network.firebase.FirebaseAuthDataSourceImpl
 import com.binar.foodorder.data.repository.UserRepositoryImpl
 import com.binar.foodorder.databinding.ActivityLoginBinding
+import com.binar.foodorder.di.AppInjection
 import com.binar.foodorder.util.GenericViewModelFactory
 import com.binar.foodorder.util.emailValid
 import com.binar.foodorder.util.highLightWord
@@ -24,7 +25,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private val viewModel: LoginViewModel by viewModels {
-        GenericViewModelFactory.create(createViewModel())
+        GenericViewModelFactory.create(LoginViewModel(AppInjection.repo))
     }
 
     private fun createViewModel(): LoginViewModel {
