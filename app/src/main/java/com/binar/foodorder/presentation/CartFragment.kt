@@ -45,7 +45,8 @@ class CartFragment : Fragment() {
         val database = AppDatabase.getInstance(requireContext())
         val cartDao = database.cartDao()
         val cartDataSource: CartDataSource = CartDatabaseDataSource(cartDao)
-        val repo: CartRepository = CartRepositoryImpl(cartDataSource,foodNetworkDataSource,firebaseDataSource)
+        val repo: CartRepository =
+            CartRepositoryImpl(cartDataSource, foodNetworkDataSource, firebaseDataSource)
         GenericViewModelFactory.create(CartViewModel(repo))
     }
     private val adapter: CartListAdapter by lazy {
@@ -89,28 +90,31 @@ class CartFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = adapter
         viewModel.cartList.observe(viewLifecycleOwner) { result ->
-            result.proceedWhen(doOnSuccess = {
-                binding.progresbarCart.isVisible = false
-                binding.tvListCartEmpty.isVisible = false
-                binding.recyclerviewCart.isVisible = true
-                result.payload?.let { (carts, totalPrice) ->
-                    adapter.submitData(carts)
-                    binding.tvTotalValue.text = totalPrice.toCurrencyFormat()
+            result.proceedWhen(
+                doOnSuccess = {
+                    binding.progresbarCart.isVisible = false
+                    binding.tvListCartEmpty.isVisible = false
+                    binding.recyclerviewCart.isVisible = true
+                    result.payload?.let { (carts, totalPrice) ->
+                        adapter.submitData(carts)
+                        binding.tvTotalValue.text = totalPrice.toCurrencyFormat()
+                    }
+
+                }, doOnLoading = {
+                    binding.tvListCartEmpty.isVisible = false
+                    binding.progresbarCart.isVisible = true
+                    binding.recyclerviewCart.isVisible = false
+
+                }, doOnError = {
+
+                }, doOnEmpty = {
+                    binding.progresbarCart.isVisible = false
+                    binding.recyclerviewCart.isVisible = false
+                    binding.tvListCartEmpty.isVisible = true
+                    result.payload?.let { (_, totalPrice) ->
+                        binding.tvTotalValue.text = totalPrice.toCurrencyFormat()
+                    }
                 }
-
-            }, doOnLoading = {
-                binding.tvListCartEmpty.isVisible = false
-                binding.progresbarCart.isVisible = true
-                binding.recyclerviewCart.isVisible = false
-
-            }, doOnError = {
-
-            }, doOnEmpty = {
-                binding.progresbarCart.isVisible = false
-                binding.recyclerviewCart.isVisible = false
-                binding.tvListCartEmpty.isVisible = true
-                
-            }
             )
         }
     }
