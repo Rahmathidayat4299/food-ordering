@@ -109,7 +109,7 @@ class CartFragment : Fragment() {
                 binding.progresbarCart.isVisible = false
                 binding.recyclerviewCart.isVisible = false
                 binding.tvListCartEmpty.isVisible = true
-                binding.tvListCartEmpty.text = R.string.title_keranjang_anda_kosong.toString()
+                
             }
             )
         }

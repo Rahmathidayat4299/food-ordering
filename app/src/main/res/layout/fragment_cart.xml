@@ -22,9 +22,11 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="@string/cart_empty"
         android:visibility="gone"
-        android:text="@string/title_keranjang_anda_kosong"
         style="@style/TextAppearance.AppCompat.Widget.ActionMode.Title"/>
 
     <TextView
