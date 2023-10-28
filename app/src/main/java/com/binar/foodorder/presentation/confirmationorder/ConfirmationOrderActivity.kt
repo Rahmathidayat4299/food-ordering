@@ -1,6 +1,5 @@
 package com.binar.foodorder.presentation.confirmationorder
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -14,7 +13,6 @@ import com.binar.foodorder.adapter.CartListener
 import com.binar.foodorder.databinding.ActivityConfirmationOrderBinding
 import com.binar.foodorder.model.Cart
 import com.binar.foodorder.presentation.cart.CartViewModel
-import com.binar.foodorder.presentation.main.MainActivity
 import com.binar.foodorder.util.proceedWhen
 import com.binar.foodorder.util.toCurrencyFormat
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -89,6 +87,7 @@ class ConfirmationOrderActivity : AppCompatActivity() {
                 doOnSuccess = {
                     recyclerView.isVisible = true
                     binding.progresbarOrderConfirmation.isVisible = false
+                    binding.tvEmpty.isVisible = false
                     result.payload?.let { (carts, totalPrice) ->
                         adapter.submitData(carts)
                         binding.tvPembayaran.text = totalPrice.toCurrencyFormat()
@@ -98,6 +97,15 @@ class ConfirmationOrderActivity : AppCompatActivity() {
                 doOnLoading = {
                     binding.progresbarOrderConfirmation.isVisible = true
                     recyclerView.isVisible = false
+                    binding.tvEmpty.isVisible = false
+                },
+                doOnEmpty = {
+                    binding.progresbarOrderConfirmation.isVisible = false
+                    binding.tvEmpty.isVisible = true
+                    recyclerView.isVisible = false
+                    result.payload?.let { (_, totalPrice) ->
+                        binding.tvPembayaran.text = totalPrice.toCurrencyFormat()
+                    }
                 }
             )
         }

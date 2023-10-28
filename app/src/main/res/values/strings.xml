@@ -72,5 +72,7 @@
     <string name="text_highlight_register">Register Here</string>
     <string name="text_error_name_cannot_empty">Name cannot empty</string>
     <string name="text_okay">okay</string>
+    <string name="order_empty">Order Empty</string>
+    <string name="metode_pembayaran">Metode Pembayaran</string>
 
 </resources>

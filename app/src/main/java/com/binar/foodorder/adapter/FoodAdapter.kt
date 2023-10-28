@@ -8,11 +8,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.binar.foodorder.databinding.ItemFoodGridviewBinding
 import com.binar.foodorder.databinding.ItemFoodListviewBinding
 import com.binar.foodorder.model.Food
-import com.binar.foodorder.presentation.homefood.DatastoreViewModel
+import com.binar.foodorder.presentation.main.MainViewModel
 
 // nilai viewModel: MainViewModel
 class FoodAdapter(
-    private val viewModel: DatastoreViewModel,
+    private val viewModel: MainViewModel,
     private val onItemClick: (Food) -> Unit
 
 ) :

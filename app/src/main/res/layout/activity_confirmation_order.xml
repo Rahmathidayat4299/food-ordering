@@ -13,6 +13,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         />
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/header_confirm_order"
@@ -120,7 +121,18 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             tools:listitem="@layout/item_food_cart"/>
+
     </androidx.core.widget.NestedScrollView>
+    <TextView
+        android:id="@+id/tv_empty"
+        android:text="@string/order_empty"
+        app:layout_constraintTop_toTopOf="@id/list_order"
+        app:layout_constraintBottom_toBottomOf="@id/list_order"
+        style="@style/TextAppearance.AppCompat.Widget.ActionMode.Title"
+        android:visibility="gone"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/metode_pembayaran"
         android:layout_width="match_parent"
@@ -133,7 +145,7 @@
             style="@style/TextAppearance.Material3.BodyLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/title_metode_pengiriman"
+            android:text="@string/metode_pembayaran"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"

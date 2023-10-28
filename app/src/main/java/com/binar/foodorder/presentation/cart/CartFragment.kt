@@ -12,9 +12,7 @@ import com.binar.foodorder.adapter.CartListAdapter
 import com.binar.foodorder.adapter.CartListener
 import com.binar.foodorder.databinding.FragmentCartBinding
 import com.binar.foodorder.model.Cart
-import com.binar.foodorder.model.Food
 import com.binar.foodorder.presentation.confirmationorder.ConfirmationOrderActivity
-import com.binar.foodorder.presentation.detailfood.DetailFoodActivity
 import com.binar.foodorder.util.proceedWhen
 import com.binar.foodorder.util.toCurrencyFormat
 import org.koin.androidx.viewmodel.ext.android.viewModel

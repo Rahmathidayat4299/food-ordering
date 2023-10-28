@@ -54,7 +54,7 @@ class HomeFood : Fragment() {
                 navigateToDetail(food)
             },
 
-            viewModel = viewDataStoreViewModel
+            viewModel = mainViewModel
         )
 
         recyclerView.adapter = adapter
@@ -88,7 +88,7 @@ class HomeFood : Fragment() {
                 navigateToDetail(food)
             },
 
-            viewModel = viewDataStoreViewModel
+            viewModel = mainViewModel
         )
         recyclerView.adapter = adapter
         foodsViewModelApi.getFoods()
@@ -165,7 +165,7 @@ class HomeFood : Fragment() {
     }
 
     private fun setViewList() {
-        viewDataStoreViewModel.getIsLinearView().observe(viewLifecycleOwner) { isLinearView ->
+        mainViewModel.getIsLinearView().observe(viewLifecycleOwner) { isLinearView ->
             toggleRecyclerViewLayout(isLinearView)
             setUpListToggle(isLinearView)
         }
