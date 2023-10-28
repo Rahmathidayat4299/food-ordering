@@ -1,4 +1,4 @@
-package com.binar.foodorder.viewmodel
+package com.binar.foodorder.presentation.splash
 
 import androidx.lifecycle.ViewModel
 import com.binar.foodorder.data.repository.UserRepository

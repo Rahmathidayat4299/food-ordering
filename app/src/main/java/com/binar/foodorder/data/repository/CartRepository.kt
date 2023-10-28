@@ -5,13 +5,11 @@ import com.binar.foodorder.data.local.database.datasource.CartDataSource
 import com.binar.foodorder.data.local.database.entity.CartEntity
 import com.binar.foodorder.data.local.database.mapper.toCartEntity
 import com.binar.foodorder.data.local.database.mapper.toCartList
-import com.binar.foodorder.data.local.database.mapper.toCartProductList
 import com.binar.foodorder.data.network.api.FoodNetworkDataSource
 import com.binar.foodorder.data.network.firebase.FirebaseAuthDataSource
 import com.binar.foodorder.data.network.model.OrderItem
 import com.binar.foodorder.data.network.model.OrderRequest
 import com.binar.foodorder.model.Cart
-import com.binar.foodorder.model.CartFood
 import com.binar.foodorder.model.Food
 import com.binar.foodorder.model.toUser
 import com.binar.foodorder.util.ResultWrapper
@@ -20,7 +18,6 @@ import com.binar.foodorder.util.proceedFlow
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 
@@ -47,7 +44,7 @@ class CartRepositoryImpl(
                 val cartList = it.toCartList()
                 val totalPrice = cartList.sumOf {
                     val quantity = it.itemQuantity
-                    val pricePerItem = it.foodPrice ?: 0.0
+                    val pricePerItem = it.foodPrice
                     quantity * pricePerItem
                 }
                 Pair(cartList, totalPrice)
@@ -64,12 +61,12 @@ class CartRepositoryImpl(
         }
     }
 
-    //gunakan di detail
+    // gunakan di detail
     override suspend fun createCart(
         food: Food,
         totalQuantity: Int
     ): Flow<ResultWrapper<Boolean>> {
-        return food.id?.let { foodId ->
+        return food.id.let { foodId ->
             proceedFlow {
                 val affectedRow = dataSource.insertCart(
                     CartEntity(
@@ -82,8 +79,6 @@ class CartRepositoryImpl(
                 )
                 affectedRow > 0
             }
-        } ?: flow {
-            emit(ResultWrapper.Error(IllegalStateException("Product ID not found")))
         }
     }
 
@@ -155,5 +150,4 @@ class CartRepositoryImpl(
     override suspend fun deleteAll() {
         dataSource.deleteAll()
     }
-
 }

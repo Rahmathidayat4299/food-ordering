@@ -1,4 +1,4 @@
-package com.binar.foodorder.viewmodel
+package com.binar.foodorder.presentation.profil
 
 import android.net.Uri
 import androidx.lifecycle.LiveData

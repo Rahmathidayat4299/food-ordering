@@ -3,7 +3,6 @@ package com.binar.foodorder.data.local.database.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.google.gson.annotations.SerializedName
 
 @Entity(tableName = "foods")
 data class FoodEntity(
@@ -19,6 +18,6 @@ data class FoodEntity(
     val detail: String,
     @ColumnInfo(name = "harga")
     val harga: Int,
-    @ColumnInfo(name="alamat_resto")
-    val alamatResto: String,
+    @ColumnInfo(name = "alamat_resto")
+    val alamatResto: String
 )

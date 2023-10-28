@@ -8,7 +8,6 @@ import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-
 /**
  * Created by Rahmat Hidayat on 24/09/2023.
  */
@@ -21,13 +20,12 @@ class ViewDataStoreManager(private val context: Context) {
         Log.d("DataStore", "isLinearView disimpan ke DataStore: $isLinear")
     }
 
-        fun getIsLinearView(): Flow<Boolean> {
+    fun getIsLinearView(): Flow<Boolean> {
         return context.counterDataStore.data.map { preferences ->
             val isLinear = preferences[IS_LINEAR_KEY] ?: true
             Log.d("DataStore", "Membaca isLinearView dari DataStore: $isLinear")
             isLinear
         }
-
     }
 
     companion object {
@@ -41,5 +39,3 @@ class ViewDataStoreManager(private val context: Context) {
         )
     }
 }
-
-

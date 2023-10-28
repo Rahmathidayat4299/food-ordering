@@ -6,9 +6,9 @@ import com.google.gson.annotations.SerializedName
 @Keep
 data class OrderResponse(
     @SerializedName("code")
-    val code:Int,
+    val code: Int,
     @SerializedName("message")
-    val message:String,
+    val message: String,
     @SerializedName("status")
-    val status:Boolean,
+    val status: Boolean
 )

@@ -1,12 +1,9 @@
 package com.binar.foodorder.data.network.model
 
-
-
 import android.os.Parcelable
 import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
-import java.util.UUID
 
 /**
  * Created by Rahmat Hidayat on 27/08/2023.
@@ -14,7 +11,7 @@ import java.util.UUID
 @Keep
 @Parcelize
 data class FoodViewParam(
-    val id:  Int,
+    val id: Int,
     @SerializedName("image_url")
     val imageUrl: String,
     @SerializedName("nama")
@@ -26,8 +23,9 @@ data class FoodViewParam(
     @SerializedName("alamat_resto")
     val alamatResto: String,
     @SerializedName("harga")
-    val harga: Int,
-):Parcelable
+    val harga: Int
+) : Parcelable
+
 @Keep
 
 data class FoodResponse(

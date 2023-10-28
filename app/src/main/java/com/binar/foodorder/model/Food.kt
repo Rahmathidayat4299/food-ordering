@@ -4,9 +4,7 @@ import android.os.Parcelable
 import androidx.annotation.Keep
 import com.binar.foodorder.data.local.database.entity.FoodEntity
 import com.binar.foodorder.data.network.model.FoodViewParam
-import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
-import java.util.UUID
 
 /**
  * Created by Rahmat Hidayat on 27/08/2023.
@@ -14,13 +12,13 @@ import java.util.UUID
 @Keep
 @Parcelize
 data class Food(
-    val id:  Int,
+    val id: Int,
     val imageUrl: String,
     val nama: String,
     val hargaFormat: String,
     val harga: Int,
     val detail: String,
-    val alamatResto: String,
+    val alamatResto: String
 ) : Parcelable
 
 fun FoodViewParam.toFood() = Food(
@@ -30,9 +28,9 @@ fun FoodViewParam.toFood() = Food(
     hargaFormat = this.hargaFormat,
     harga = this.harga,
     detail = this.detail,
-    alamatResto = this.alamatResto,
+    alamatResto = this.alamatResto
 
-    )
+)
 
 fun Food.toFoodEntity() = FoodEntity(
     id = this.id,

@@ -1,31 +1,25 @@
-package com.binar.foodorder.presentation
+package com.binar.foodorder.presentation.register
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
-import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.binar.foodorder.R
-import com.binar.foodorder.data.network.firebase.FirebaseAuthDataSourceImpl
-import com.binar.foodorder.data.repository.UserRepositoryImpl
 import com.binar.foodorder.databinding.ActivityRegisterBinding
-import com.binar.foodorder.di.AppInjection
-import com.binar.foodorder.util.GenericViewModelFactory
+import com.binar.foodorder.presentation.login.LoginActivity
+import com.binar.foodorder.presentation.main.MainActivity
 import com.binar.foodorder.util.emailValid
 import com.binar.foodorder.util.highLightWord
 import com.binar.foodorder.util.onTextChangedWithValidation
 import com.binar.foodorder.util.proceedWhen
-import com.binar.foodorder.viewmodel.RegisterViewModel
-import com.google.firebase.auth.FirebaseAuth
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class RegisterActivity : AppCompatActivity() {
     private val binding: ActivityRegisterBinding by lazy {
         ActivityRegisterBinding.inflate(layoutInflater)
     }
-    private val viewModel: RegisterViewModel by viewModels {
-        GenericViewModelFactory.create(RegisterViewModel(AppInjection.repo))
-    }
+    private val viewModel: RegisterViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,7 +33,7 @@ class RegisterActivity : AppCompatActivity() {
         binding.btnRegister.setOnClickListener {
             doRegister()
         }
-        binding.tvNavLogin.highLightWord(getString(R.string.text_highlight_login_here)){
+        binding.tvNavLogin.highLightWord(getString(R.string.text_highlight_login_here)) {
             navigateToLogin()
         }
     }
@@ -66,7 +60,7 @@ class RegisterActivity : AppCompatActivity() {
                     ).show()
                 },
                 doOnLoading = {
-                   binding.pbLoading.isVisible = true
+                    binding.pbLoading.isVisible = true
                     binding.btnRegister.isVisible = false
                 }
             )
@@ -74,7 +68,7 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun navigateToMain() {
-        val intent =Intent(this, MainActivity::class.java)
+        val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
     }
 
@@ -83,13 +77,17 @@ class RegisterActivity : AppCompatActivity() {
         val fullName = binding.nameEt.text.toString().trim()
         val password = binding.PassEt.text.toString().trim()
         viewModel.doRegister(
-            fullName,email,password
+            fullName,
+            email,
+            password
         )
     }
     private fun navigateToLogin() {
-        startActivity(Intent(this, LoginActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP
-        })
+        startActivity(
+            Intent(this, LoginActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP
+            }
+        )
     }
     private fun editTextFilled() {
         binding.emailEt.onTextChangedWithValidation(
@@ -117,5 +115,4 @@ class RegisterActivity : AppCompatActivity() {
         binding.btnRegister.isEnabled =
             email.isNotEmpty() && emailValid(email) && password.length >= 8 && password.isNotEmpty()
     }
-
 }

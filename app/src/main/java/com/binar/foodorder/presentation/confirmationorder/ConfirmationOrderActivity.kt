@@ -1,10 +1,8 @@
-package com.binar.foodorder.presentation
+package com.binar.foodorder.presentation.confirmationorder
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -12,63 +10,31 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.binar.foodorder.R
 import com.binar.foodorder.adapter.CartListAdapter
 import com.binar.foodorder.adapter.CartListener
-import com.binar.foodorder.data.local.database.AppDatabase
-import com.binar.foodorder.data.local.database.datasource.CartDataSource
-import com.binar.foodorder.data.local.database.datasource.CartDatabaseDataSource
-import com.binar.foodorder.data.network.api.FoodNetworkDataSource
-import com.binar.foodorder.data.network.api.FoodNetworkDataSourceImpl
-import com.binar.foodorder.data.network.api.FoodService
-import com.binar.foodorder.data.network.firebase.FirebaseAuthDataSourceImpl
-import com.binar.foodorder.data.repository.CartRepository
-import com.binar.foodorder.data.repository.CartRepositoryImpl
-import com.binar.foodorder.data.repository.UserRepositoryImpl
 import com.binar.foodorder.databinding.ActivityConfirmationOrderBinding
 import com.binar.foodorder.model.Cart
-import com.binar.foodorder.util.GenericViewModelFactory
+import com.binar.foodorder.presentation.cart.CartViewModel
 import com.binar.foodorder.util.proceedWhen
 import com.binar.foodorder.util.toCurrencyFormat
-import com.binar.foodorder.viewmodel.CartViewModel
-import com.binar.foodorder.viewmodel.ConfirmationOrderViewModel
-import com.binar.foodorder.viewmodel.ProfileViewModel
-import com.google.firebase.auth.FirebaseAuth
-
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ConfirmationOrderActivity : AppCompatActivity() {
     private val binding: ActivityConfirmationOrderBinding by lazy {
         ActivityConfirmationOrderBinding.inflate(layoutInflater)
     }
-
-    private val viewModel: CartViewModel by viewModels {
-        val service: FoodService by lazy {
-            FoodService.invoke()
-        }
-        val firebaseAuth = FirebaseAuth.getInstance()
-        val foodNetworkDataSource = FoodNetworkDataSourceImpl(service)
-        val firebaseDataSource = FirebaseAuthDataSourceImpl(firebaseAuth)
-        val database = AppDatabase.getInstance(this)
-        val cartDao = database.cartDao()
-        val cartDataSource: CartDataSource = CartDatabaseDataSource(cartDao)
-        val repo: CartRepository =
-            CartRepositoryImpl(cartDataSource, foodNetworkDataSource, firebaseDataSource)
-        GenericViewModelFactory.create(CartViewModel(repo))
-    }
+    private val viewModel: CartViewModel by viewModel()
 
     private val adapter: CartListAdapter by lazy {
         CartListAdapter(object : CartListener {
             override fun onPlusTotalItemCartClicked(cart: Cart) {
-
             }
 
             override fun onMinusTotalItemCartClicked(cart: Cart) {
-
             }
 
             override fun onRemoveCartClicked(cart: Cart) {
-
             }
 
             override fun onUserDoneEditingNotes(cart: Cart) {
-
             }
         })
     }
@@ -80,28 +46,25 @@ class ConfirmationOrderActivity : AppCompatActivity() {
         back()
         observeOrderSuccess()
         setOnclick()
-
     }
 
     private fun setOnclick() {
-
         binding.btnCheckout.setOnClickListener {
             viewModel.createOrder()
         }
     }
 
     private fun observeOrderSuccess() {
-        viewModel.confirmationOrder.observe(this){result->
+        viewModel.confirmationOrder.observe(this) { result ->
             result.proceedWhen(
                 doOnSuccess = {
                     showDialogCheckoutSuccess()
                     viewModel.clearCart()
                 },
                 doOnError = {
-                    Toast.makeText(this, "Error post ${it.message.toString()}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Error post ${it.message}", Toast.LENGTH_SHORT).show()
                 }
             )
-
         }
     }
 
@@ -112,7 +75,6 @@ class ConfirmationOrderActivity : AppCompatActivity() {
                 finish()
             }.create().show()
     }
-
 
     private fun setUpRecycleview() {
         val recyclerView = binding.recycleViewOrder
@@ -125,34 +87,33 @@ class ConfirmationOrderActivity : AppCompatActivity() {
                 doOnSuccess = {
                     recyclerView.isVisible = true
                     binding.progresbarOrderConfirmation.isVisible = false
+                    binding.tvEmpty.isVisible = false
                     result.payload?.let { (carts, totalPrice) ->
                         adapter.submitData(carts)
                         binding.tvPembayaran.text = totalPrice.toCurrencyFormat()
                         Log.d("Testt", "setUpRecycleview:${result.payload.first} ")
                     }
-                }, doOnLoading = {
+                },
+                doOnLoading = {
                     binding.progresbarOrderConfirmation.isVisible = true
                     recyclerView.isVisible = false
+                    binding.tvEmpty.isVisible = false
+                },
+                doOnEmpty = {
+                    binding.progresbarOrderConfirmation.isVisible = false
+                    binding.tvEmpty.isVisible = true
+                    recyclerView.isVisible = false
+                    result.payload?.let { (_, totalPrice) ->
+                        binding.tvPembayaran.text = totalPrice.toCurrencyFormat()
+                    }
                 }
             )
         }
-    }
-
-    private fun navigateToHome() {
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
     }
 
     private fun back() {
         binding.icBackArrow.setOnClickListener {
             onBackPressed()
         }
-    }
-
-    private fun createViewModel(): ProfileViewModel {
-        val firebaseAuth = FirebaseAuth.getInstance()
-        val dataSource = FirebaseAuthDataSourceImpl(firebaseAuth)
-        val repo = UserRepositoryImpl(dataSource)
-        return ProfileViewModel(repo)
     }
 }

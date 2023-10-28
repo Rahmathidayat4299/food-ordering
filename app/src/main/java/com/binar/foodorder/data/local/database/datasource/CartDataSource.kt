@@ -2,7 +2,6 @@ package com.binar.foodorder.data.local.database.datasource
 
 import com.binar.foodorder.data.local.database.dao.CartDao
 import com.binar.foodorder.data.local.database.entity.CartEntity
-import com.binar.foodorder.data.local.database.relation.CartFoodRelation
 import kotlinx.coroutines.flow.Flow
 
 interface CartDataSource {
@@ -38,5 +37,4 @@ class CartDatabaseDataSource(private val cartDao: CartDao) : CartDataSource {
     override suspend fun deleteAll() {
         cartDao.deleteAll()
     }
-
 }

@@ -4,13 +4,13 @@ import com.binar.foodorder.data.network.model.CategoryViewParamResponse
 import com.binar.foodorder.data.network.model.FoodResponse
 
 interface CategoryNetworkDataSource {
-    suspend fun getCategoryListFoods():CategoryViewParamResponse
-    suspend fun getCategory(category:String): FoodResponse
+    suspend fun getCategoryListFoods(): CategoryViewParamResponse
+    suspend fun getCategory(category: String): FoodResponse
 }
 
 class CategoryNetworkDataSourceImpl(
     private val service: FoodService
-):CategoryNetworkDataSource{
+) : CategoryNetworkDataSource {
     override suspend fun getCategoryListFoods(): CategoryViewParamResponse {
         return service.getListCategories()
     }
@@ -18,6 +18,4 @@ class CategoryNetworkDataSourceImpl(
     override suspend fun getCategory(category: String): FoodResponse {
         return service.getCategories(category)
     }
-
-
 }

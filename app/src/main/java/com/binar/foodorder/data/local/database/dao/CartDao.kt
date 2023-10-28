@@ -7,7 +7,6 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.binar.foodorder.data.local.database.entity.CartEntity
-import com.binar.foodorder.data.local.database.relation.CartFoodRelation
 import kotlinx.coroutines.flow.Flow
 
 @Dao

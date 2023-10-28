@@ -15,18 +15,19 @@ import com.binar.foodorder.model.Category
  */
 class CategoryAdapter(private val onItemClick: (Category) -> Unit) :
     RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
-    private var items: MutableList<Category> = mutableListOf()
-    private val differ = AsyncListDiffer(this, object : DiffUtil.ItemCallback<Category>() {
-        override fun areItemsTheSame(oldItem: Category, newItem: Category): Boolean {
-            return oldItem.nama == newItem.nama &&
+    private val differ = AsyncListDiffer(
+        this,
+        object : DiffUtil.ItemCallback<Category>() {
+            override fun areItemsTheSame(oldItem: Category, newItem: Category): Boolean {
+                return oldItem.nama == newItem.nama &&
                     oldItem.imageUrl == newItem.imageUrl
-        }
+            }
 
-        override fun areContentsTheSame(oldItem: Category, newItem: Category): Boolean {
-            return oldItem.hashCode() == newItem.hashCode()
+            override fun areContentsTheSame(oldItem: Category, newItem: Category): Boolean {
+                return oldItem.hashCode() == newItem.hashCode()
+            }
         }
-
-    })
+    )
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
         val binding =
@@ -45,12 +46,10 @@ class CategoryAdapter(private val onItemClick: (Category) -> Unit) :
         Log.d("CategoryAdapter", "Data masuk ke adapter: $item")
     }
 
-
     class CategoryViewHolder(
         val binding: ItemCategoryBinding,
-        private val onItemClick: (Category) -> Unit,
+        private val onItemClick: (Category) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
-
 
         fun bindView(item: Category) {
             binding.tvFoodimage.load(item.imageUrl)
@@ -61,5 +60,3 @@ class CategoryAdapter(private val onItemClick: (Category) -> Unit) :
         }
     }
 }
-
-
