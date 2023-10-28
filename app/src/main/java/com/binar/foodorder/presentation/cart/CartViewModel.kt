@@ -1,4 +1,4 @@
-package com.binar.foodorder.viewmodel
+package com.binar.foodorder.presentation.cart
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -10,8 +10,8 @@ import com.binar.foodorder.data.repository.CartRepository
 import com.binar.foodorder.model.Cart
 import com.binar.foodorder.util.ResultWrapper
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 class CartViewModel(private val repo: CartRepository) : ViewModel() {
 
@@ -31,25 +31,22 @@ class CartViewModel(private val repo: CartRepository) : ViewModel() {
     }
 
     private val _confirmationOrder = MutableLiveData<ResultWrapper<Boolean>>()
-    val confirmationOrder : LiveData<ResultWrapper<Boolean>>
+    val confirmationOrder: LiveData<ResultWrapper<Boolean>>
         get() = _confirmationOrder
 
-    fun createOrder(){
+    fun createOrder() {
         viewModelScope.launch(Dispatchers.IO) {
-            val list =cartList.value?.payload?.first ?:return@launch
+            val list = cartList.value?.payload?.first ?: return@launch
             Log.d("ConfirmViewModel", "createOrder:$list ")
-            repo.createOrder(list).collect{
+            repo.createOrder(list).collect {
                 _confirmationOrder.postValue(it)
             }
         }
     }
 
-fun clearCart(){
-    viewModelScope.launch(Dispatchers.IO) {
-        repo.deleteAll()
+    fun clearCart() {
+        viewModelScope.launch(Dispatchers.IO) {
+            repo.deleteAll()
+        }
     }
-}
-
-
-
 }

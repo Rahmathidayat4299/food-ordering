@@ -7,8 +7,6 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await
-import kotlin.math.log
-
 
 interface FirebaseAuthDataSource {
 
@@ -20,7 +18,7 @@ interface FirebaseAuthDataSource {
     suspend fun updatePassword(newPassword: String): Boolean
     suspend fun updateProfile(
         fullName: String? = null,
-        email: Uri? = null,
+        email: Uri? = null
     ): Boolean
 
     fun sendChangePasswordRequestByEmail(): Boolean
@@ -28,7 +26,6 @@ interface FirebaseAuthDataSource {
     fun isLoggedIn(): Boolean
     fun getCurrentUser(): FirebaseUser?
     suspend fun updateEmail(newEmail: String): Boolean
-
 }
 
 class FirebaseAuthDataSourceImpl(private val firebaseAuth: FirebaseAuth) : FirebaseAuthDataSource {
@@ -87,5 +84,4 @@ class FirebaseAuthDataSourceImpl(private val firebaseAuth: FirebaseAuth) : Fireb
         getCurrentUser()?.updateEmail(newEmail)?.await()
         return true
     }
-
 }

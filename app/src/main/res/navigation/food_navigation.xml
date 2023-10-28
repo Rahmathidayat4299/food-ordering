@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeFood"
-        android:name="com.binar.foodorder.presentation.HomeFood"
+        android:name="com.binar.foodorder.presentation.homefood.HomeFood"
         android:label="HomeFood" >
         <action
             android:id="@+id/action_homeFood_to_detailFood"
@@ -31,7 +31,7 @@
     </fragment>
     <fragment
         android:id="@+id/cartFragment"
-        android:name="com.binar.foodorder.presentation.CartFragment"
+        android:name="com.binar.foodorder.presentation.cart.CartFragment"
         android:label="fragment_cart"
         tools:layout="@layout/fragment_cart" >
         <action
@@ -40,7 +40,7 @@
     </fragment>
     <fragment
         android:id="@+id/profilFragment"
-        android:name="com.binar.foodorder.presentation.ProfilFragment"
+        android:name="com.binar.foodorder.presentation.profil.ProfilFragment"
         android:label="fragment_profil"
         tools:layout="@layout/fragment_profil" >
         <action

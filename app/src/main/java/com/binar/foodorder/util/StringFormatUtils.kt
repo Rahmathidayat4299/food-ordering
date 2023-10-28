@@ -8,7 +8,7 @@ import kotlin.math.roundToInt
 /**
  * Created by Rahmat Hidayat on 30/09/2023.
  */
-fun Double.toCurrencyFormat():String{
+fun Double.toCurrencyFormat(): String {
     val locale = Locale("id", "ID") // Indonesian locale
     val format: NumberFormat = NumberFormat.getCurrencyInstance(locale)
     format.maximumFractionDigits = 0

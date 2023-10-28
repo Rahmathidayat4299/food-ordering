@@ -5,33 +5,40 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.binar.foodorder.viewmodel.DatastoreViewModel
 import com.binar.foodorder.databinding.ItemFoodGridviewBinding
 import com.binar.foodorder.databinding.ItemFoodListviewBinding
-import com.binar.foodorder.model.Category
 import com.binar.foodorder.model.Food
-//nilai viewModel: MainViewModel
-class FoodAdapter(private val onItemClick: (Food) -> Unit, private val viewModel: DatastoreViewModel) :
+import com.binar.foodorder.presentation.homefood.DatastoreViewModel
+
+// nilai viewModel: MainViewModel
+class FoodAdapter(
+    private val viewModel: DatastoreViewModel,
+    private val onItemClick: (Food) -> Unit
+
+) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val VIEW_TYPE_GRID = 0
     private val VIEW_TYPE_LIST = 1
 
-    private val differ = AsyncListDiffer(this, object : DiffUtil.ItemCallback<Food>() {
-        override fun areItemsTheSame(oldItem: Food, newItem: Food): Boolean {
-            return oldItem.nama == newItem.nama &&
+    private val differ = AsyncListDiffer(
+        this,
+        object : DiffUtil.ItemCallback<Food>() {
+            override fun areItemsTheSame(oldItem: Food, newItem: Food): Boolean {
+                return oldItem.nama == newItem.nama &&
                     oldItem.hargaFormat == newItem.hargaFormat &&
                     oldItem.id == newItem.id &&
                     oldItem.imageUrl == newItem.imageUrl &&
                     oldItem.alamatResto == newItem.alamatResto &&
                     oldItem.harga == newItem.harga &&
                     oldItem.detail == newItem.detail
-        }
+            }
 
-        override fun areContentsTheSame(oldItem: Food, newItem: Food): Boolean {
-            return oldItem.hashCode() == newItem.hashCode()
+            override fun areContentsTheSame(oldItem: Food, newItem: Food): Boolean {
+                return oldItem.hashCode() == newItem.hashCode()
+            }
         }
-    })
+    )
 
     fun setData(data: List<Food>) {
         differ.submitList(data)

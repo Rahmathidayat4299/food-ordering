@@ -4,7 +4,6 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.binar.foodorder.databinding.ItemFoodListviewBinding
 import com.binar.foodorder.model.Food
-import com.binar.foodorder.util.toCurrencyFormat
 
 /**
  * Created by Rahmat Hidayat on 10/09/2023.
@@ -21,5 +20,4 @@ class ListViewHolder(
         itemListView.tvFoodimage.load(food.imageUrl)
         itemListView.root.setOnClickListener { onItemClick.invoke(food) }
     }
-
 }

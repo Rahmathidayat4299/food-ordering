@@ -6,6 +6,7 @@ plugins {
     id("com.google.devtools.ksp")
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
+    id("org.jlleitschuh.gradle.ktlint")
 }
 
 android {
@@ -45,14 +46,29 @@ android {
     flavorDimensions += "env"
     productFlavors {
         create("production") {
-            buildConfigField("String", "BASE_URL", "\"https://7a3a7859-4aee-4c3b-ab96-0e20c7a2cea5.mock.pstmn.io\"")
+            buildConfigField("String", "BASE_URL", "\"https://dc6724e6-bf36-4ff0-8206-4653c3e97f64.mock.pstmn.io\"")
         }
         create("integration") {
-            buildConfigField("String", "BASE_URL", "\"https://7a3a7859-4aee-4c3b-ab96-0e20c7a2cea5.mock.pstmn.io\"")
+            buildConfigField("String", "BASE_URL", "\"https://dc6724e6-bf36-4ff0-8206-4653c3e97f64.mock.pstmn.io\"")
         }
     }
 }
-
+tasks.getByPath("preBuild").dependsOn("ktlintFormat")
+ktlint {
+    android.set(false)
+    ignoreFailures.set(true)
+    reporters {
+        reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.PLAIN)
+        reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.CHECKSTYLE)
+    }
+    kotlinScriptAdditionalPaths {
+        include(fileTree("scripts/"))
+    }
+    filter {
+        exclude("**/generated/**")
+        include("**/kotlin/**")
+    }
+}
 dependencies {
 
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.2")
@@ -76,16 +92,17 @@ dependencies {
     implementation("io.github.shashank02051997:FancyToast:2.0.2")
     implementation("io.coil-kt:coil:2.4.0")
     implementation("androidx.datastore:datastore-preferences:1.0.0")
-    implementation ("androidx.room:room-ktx:2.5.2")
+    implementation("androidx.room:room-ktx:2.5.2")
     ksp("androidx.room:room-compiler:2.5.0")
-    implementation ("com.airbnb.android:lottie:3.4.0")
-    //retrofit & okhttp
-    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
-    implementation ("com.squareup.okhttp3:okhttp:4.11.0")
-    //chucker
+    implementation("com.airbnb.android:lottie:3.4.0")
+    // retrofit & okhttp
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.okhttp3:okhttp:4.11.0")
+    // chucker
 
-    debugImplementation ("com.github.chuckerteam.chucker:library:4.0.0")
-    releaseImplementation ("com.github.chuckerteam.chucker:library-no-op:4.0.0")
-
+    debugImplementation("com.github.chuckerteam.chucker:library:4.0.0")
+    releaseImplementation("com.github.chuckerteam.chucker:library-no-op:4.0.0")
+    // koin
+    implementation("io.insert-koin:koin-android:3.5.0")
 }

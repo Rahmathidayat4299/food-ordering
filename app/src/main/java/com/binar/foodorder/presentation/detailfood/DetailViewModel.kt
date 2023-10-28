@@ -1,4 +1,4 @@
-package com.binar.foodorder.viewmodel
+package com.binar.foodorder.presentation.detailfood
 
 import android.os.Bundle
 import androidx.lifecycle.LiveData
@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.binar.foodorder.data.repository.CartRepository
 import com.binar.foodorder.model.Food
-import com.binar.foodorder.presentation.DetailFoodActivity
 import com.binar.foodorder.util.ResultWrapper
 import kotlinx.coroutines.launch
 
@@ -35,15 +34,15 @@ class DetailViewModel(
         val harga = food?.harga?.toDouble()
         val count = (productCountLiveData.value ?: 0) + 1
         productCountLiveData.postValue(count)
-        priceLiveData.postValue(harga?.times(count)?:0.0)
+        priceLiveData.postValue(harga?.times(count) ?: 0.0)
     }
 
     fun minus() {
-val harga = food?.harga?.toDouble()
+        val harga = food?.harga?.toDouble()
         if ((productCountLiveData.value ?: 0) > 0) {
             val count = (productCountLiveData.value ?: 0) - 1
             productCountLiveData.postValue(count)
-            priceLiveData.postValue(harga?.times(count)?:0.0)
+            priceLiveData.postValue(harga?.times(count) ?: 0.0)
         }
     }
 
@@ -58,5 +57,4 @@ val harga = food?.harga?.toDouble()
             }
         }
     }
-
 }

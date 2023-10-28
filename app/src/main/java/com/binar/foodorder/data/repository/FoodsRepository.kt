@@ -1,10 +1,7 @@
 package com.binar.foodorder.data.repository
 
-import com.binar.foodorder.data.local.database.AppDatabase
 import com.binar.foodorder.data.network.api.CategoryNetworkDataSource
 import com.binar.foodorder.data.network.api.FoodNetworkDataSource
-import com.binar.foodorder.data.network.model.OrderRequest
-import com.binar.foodorder.data.network.model.OrderResponse
 import com.binar.foodorder.model.Category
 import com.binar.foodorder.model.Food
 import com.binar.foodorder.model.toCategory
@@ -16,15 +13,12 @@ import kotlinx.coroutines.flow.Flow
 interface FoodsRepository {
     suspend fun getFoods(): Flow<ResultWrapper<List<Food>>>
     suspend fun getListCategory(): Flow<ResultWrapper<List<Category>>>
-    suspend fun getCategory(category:String): Flow<ResultWrapper<List<Food>>>
-
-
+    suspend fun getCategory(category: String): Flow<ResultWrapper<List<Food>>>
 }
 
 class FoodsRepositoryImpl(
     private val foodNetworkDataSource: FoodNetworkDataSource,
-    private val categoryNetworkDataSource: CategoryNetworkDataSource,
-    private val appDatabase: AppDatabase
+    private val categoryNetworkDataSource: CategoryNetworkDataSource
 ) : FoodsRepository {
     override suspend fun getFoods(): Flow<ResultWrapper<List<Food>>> {
         return proceedFlow {
@@ -43,8 +37,4 @@ class FoodsRepositoryImpl(
             categoryNetworkDataSource.getCategory(category).data.toFood()
         }
     }
-
-
-
-
 }

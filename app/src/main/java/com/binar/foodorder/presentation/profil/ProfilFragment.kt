@@ -1,4 +1,4 @@
-package com.binar.foodorder.presentation
+package com.binar.foodorder.presentation.profil
 
 import android.app.AlertDialog
 import android.content.Intent
@@ -10,29 +10,18 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import coil.load
 import coil.transform.CircleCropTransformation
-import coil.transform.RoundedCornersTransformation
 import com.binar.foodorder.R
-import com.binar.foodorder.data.network.firebase.FirebaseAuthDataSourceImpl
-import com.binar.foodorder.data.repository.UserRepositoryImpl
 import com.binar.foodorder.databinding.FragmentProfilBinding
-import com.binar.foodorder.di.AppInjection
-import com.binar.foodorder.util.GenericViewModelFactory
+import com.binar.foodorder.presentation.login.LoginActivity
 import com.binar.foodorder.util.proceedWhen
-import com.binar.foodorder.viewmodel.ProfileViewModel
-import com.binar.foodorder.viewmodel.SplashViewModel
-import com.google.firebase.auth.FirebaseAuth
-
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ProfilFragment : Fragment() {
     private lateinit var binding: FragmentProfilBinding
-    private val viewModel: ProfileViewModel by viewModels {
-        GenericViewModelFactory.create(ProfileViewModel(AppInjection.repo))
-    }
+    private val viewModel: ProfileViewModel by viewModel()
     private val pickMedia =
         this.registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
             if (uri != null) {
@@ -44,11 +33,11 @@ class ProfilFragment : Fragment() {
         viewModel.updateProfilePicture(uri)
     }
 
-
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         binding = FragmentProfilBinding.inflate(inflater, container, false)
         return binding.root
@@ -90,7 +79,7 @@ class ProfilFragment : Fragment() {
             .setNegativeButton(
                 "No"
             ) { dialog, id ->
-                //no-op , do nothing
+                // no-op , do nothing
             }.create()
         dialog.show()
     }
@@ -139,7 +128,6 @@ class ProfilFragment : Fragment() {
             .setPositiveButton(
                 "Okay"
             ) { dialog, id ->
-
             }.create()
         dialog.show()
     }
@@ -154,13 +142,13 @@ class ProfilFragment : Fragment() {
                 ).show()
                 showItemProfile()
             }, doOnError = {
-                Toast.makeText(
-                    requireContext(),
-                    "Change Photo Profile Failed !",
-                    Toast.LENGTH_SHORT
-                ).show()
-                showItemProfile()
-            })
+                    Toast.makeText(
+                        requireContext(),
+                        "Change Photo Profile Failed !",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    showItemProfile()
+                })
         }
         viewModel.changeProfileResult.observe(viewLifecycleOwner) {
             it.proceedWhen(
@@ -177,10 +165,8 @@ class ProfilFragment : Fragment() {
                         "Change Profile data Failed !",
                         Toast.LENGTH_SHORT
                     ).show()
-
-                },
+                }
             )
         }
     }
 }
-

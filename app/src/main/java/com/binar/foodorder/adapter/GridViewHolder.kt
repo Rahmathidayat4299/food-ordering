@@ -4,7 +4,6 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.binar.foodorder.databinding.ItemFoodGridviewBinding
 import com.binar.foodorder.model.Food
-import com.binar.foodorder.util.toCurrencyFormat
 
 /**
  * Created by Rahmat Hidayat on 10/09/2023.
@@ -21,6 +20,4 @@ class GridViewHolder(
             onItemClick.invoke(food)
         }
     }
-
-
 }
