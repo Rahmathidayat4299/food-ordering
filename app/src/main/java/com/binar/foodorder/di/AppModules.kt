@@ -22,7 +22,6 @@ import com.binar.foodorder.data.repository.UserRepository
 import com.binar.foodorder.data.repository.UserRepositoryImpl
 import com.binar.foodorder.presentation.cart.CartViewModel
 import com.binar.foodorder.presentation.detailfood.DetailViewModel
-import com.binar.foodorder.presentation.homefood.DatastoreViewModel
 import com.binar.foodorder.presentation.homefood.FoodsViewModel
 import com.binar.foodorder.presentation.login.LoginViewModel
 import com.binar.foodorder.presentation.main.MainViewModel
@@ -72,7 +71,6 @@ object AppModules {
         viewModel { params -> DetailViewModel(params.get(), get()) }
         viewModelOf(::CartViewModel)
         viewModelOf(::ProfileViewModel)
-        viewModelOf(::DatastoreViewModel)
     }
     val modules: List<Module> = listOf(
         localModule,

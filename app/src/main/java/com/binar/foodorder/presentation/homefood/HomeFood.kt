@@ -27,7 +27,6 @@ class HomeFood : Fragment() {
 
     private val foodsViewModelApi: FoodsViewModel by viewModel()
     private val mainViewModel: MainViewModel by activityViewModel()
-    private val viewDataStoreViewModel: DatastoreViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,
