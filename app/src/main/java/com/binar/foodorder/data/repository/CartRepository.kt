@@ -1,6 +1,5 @@
 package com.binar.foodorder.data.repository
 
-import android.util.Log
 import com.binar.foodorder.data.local.database.datasource.CartDataSource
 import com.binar.foodorder.data.local.database.entity.CartEntity
 import com.binar.foodorder.data.local.database.mapper.toCartEntity
@@ -17,9 +16,12 @@ import com.binar.foodorder.util.proceed
 import com.binar.foodorder.util.proceedFlow
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
+import java.lang.Exception
 
 interface CartRepository {
     fun getUserCartData(): Flow<ResultWrapper<Pair<List<Cart>, Double>>>
@@ -49,16 +51,20 @@ class CartRepositoryImpl(
                 }
                 Pair(cartList, totalPrice)
             }
-        }.map {
-            if (it.payload?.first?.isEmpty() == true) {
-                ResultWrapper.Empty(it.payload)
-            } else {
-                it
-            }
-        }.onStart {
-            emit(ResultWrapper.Loading())
-            delay(2000)
         }
+            .map {
+                if (it.payload?.first?.isEmpty() == true) {
+                    ResultWrapper.Empty(it.payload)
+                } else {
+                    it
+                }
+            }.catch {
+                emit(ResultWrapper.Error(Exception(it)))
+            }
+            .onStart {
+                emit(ResultWrapper.Loading())
+                delay(2000)
+            }
     }
 
     // gunakan di detail
@@ -66,7 +72,7 @@ class CartRepositoryImpl(
         food: Food,
         totalQuantity: Int
     ): Flow<ResultWrapper<Boolean>> {
-        return food.id.let { foodId ->
+        return food.id?.let { foodId ->
             proceedFlow {
                 val affectedRow = dataSource.insertCart(
                     CartEntity(
@@ -79,6 +85,8 @@ class CartRepositoryImpl(
                 )
                 affectedRow > 0
             }
+        } ?: flow {
+            emit(ResultWrapper.Error(IllegalStateException("Food ID not found")))
         }
     }
 
@@ -118,10 +126,6 @@ class CartRepositoryImpl(
                     qty = it.itemQuantity
                 )
             }
-            Log.d(
-                "CartRepositoryImpl",
-                "OrderItems: $orderItems"
-            ) // Add this line to log orderItems
 
             val totalQuantity = dataSource.getAllCarts().first()
             val totalPrice = totalQuantity.sumOf { it.foodPrice * it.itemQuantity }
@@ -131,16 +135,8 @@ class CartRepositoryImpl(
                 total = totalPrice.toInt(),
                 username = user.toString() // Fix total here
             )
-            Log.d(
-                "CartRepositoryImpl",
-                "OrderRequest: $orderRequest"
-            ) // Add this line to log orderRequest
 
             val createOrderResponse = foodNetworkDataSource.createOrder(orderRequest)
-            Log.d(
-                "CartRepositoryImpl",
-                "CreateOrderResponse: $createOrderResponse"
-            ) // Add this line to log the response
 
             val isOrderCreated = createOrderResponse.status == true
             isOrderCreated
