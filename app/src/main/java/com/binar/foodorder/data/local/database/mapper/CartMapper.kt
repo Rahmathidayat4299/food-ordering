@@ -1,9 +1,7 @@
 package com.binar.foodorder.data.local.database.mapper
 
 import com.binar.foodorder.data.local.database.entity.CartEntity
-import com.binar.foodorder.data.local.database.relation.CartFoodRelation
 import com.binar.foodorder.model.Cart
-import com.binar.foodorder.model.CartFood
 
 fun CartEntity?.toCart() = Cart(
     id = this?.id ?: 0,
@@ -28,13 +26,3 @@ fun Cart?.toCartEntity() = CartEntity(
 
 // list of entity > list of view object
 fun List<CartEntity?>.toCartList() = this.map { it.toCart() }
-
-// Entity > View Object
-fun CartFoodRelation.toCartFood() = CartFood(
-    cart = this.cart.toCart(),
-
-    food = this.food.toFood()
-)
-
-// list of entity > list of view object
-fun List<CartFoodRelation>.toCartProductList() = this.map { it.toCartFood() }

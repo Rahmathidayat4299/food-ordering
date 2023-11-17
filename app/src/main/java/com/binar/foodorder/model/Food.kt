@@ -12,7 +12,7 @@ import kotlinx.android.parcel.Parcelize
 @Keep
 @Parcelize
 data class Food(
-    val id: Int,
+    val id: Int? = null,
     val imageUrl: String,
     val nama: String,
     val hargaFormat: String,

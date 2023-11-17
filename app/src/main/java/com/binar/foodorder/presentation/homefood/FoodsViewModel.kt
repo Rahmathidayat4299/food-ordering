@@ -49,18 +49,4 @@ class FoodsViewModel(
             }
         }
     }
-//    private val service: FoodService by lazy {
-//        FoodService.invoke()
-//    }
-//    val responseCategoryList = MutableLiveData<CategoryViewParamResponse>()
-//    fun getCategoryTest(){
-//        try {
-//            viewModelScope.launch(Dispatchers.IO) {
-//                val response = service.getListCategories()
-//                responseCategoryList.postValue(response)
-//            }
-//        }catch (e:Exception){
-//            e.printStackTrace()
-//        }
-//    }
 }

@@ -9,7 +9,7 @@ data class CartEntity(
     @PrimaryKey(autoGenerate = true)
     var id: Int? = null,
     @ColumnInfo(name = "food_id")
-    var foodId: Int = 0,
+    var foodId: Int ? = null,
     @ColumnInfo(name = "food_name")
     val foodName: String,
     @ColumnInfo(name = "food_price")
